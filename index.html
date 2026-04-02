@@ -11,8 +11,8 @@
         :root {
             --bg-color: #050505;
             --text-color: #ffffff;
-            --header-bg: rgba(5, 5, 5, 0.1); /* Почти прозрачный черный */
-            --card-bg: rgba(17, 17, 17, 0.9); /* Чуть больше непрозрачности для читаемости */
+            --header-bg: rgba(5, 5, 5, 0.1);
+            --card-bg: rgba(17, 17, 17, 0.9);
             --card-border: #333333;
             --card-hover-bg: #ffffff;
             --card-hover-text: #000000;
@@ -24,15 +24,13 @@
             --footer-text: #666;
             --tg-color: #24A1DE;
             --steam-color: #171a21;
-
-            /* Цвет точек для ТЕМНОЙ темы */
             --dot-color: rgba(255, 255, 255, 0.4); 
         }
 
         body.light-theme {
             --bg-color: #f4f4f4;
             --text-color: #000000;
-            --header-bg: rgba(255, 255, 255, 0.1); /* Почти прозрачный белый */
+            --header-bg: rgba(255, 255, 255, 0.1);
             --header-border: rgba(0, 0, 0, 0.05);
             --card-bg: rgba(255, 255, 255, 0.9);
             --card-border: #dee2e6;
@@ -44,87 +42,69 @@
             --logo-shadow: rgba(0, 0, 0, 0.1);
             --footer-border: #dee2e6;
             --footer-text: #6c757d;
-
-            /* Цвет точек для СВЕТЛОЙ темы (делаем их темными) */
             --dot-color: rgba(0, 0, 0, 0.7); 
-            .steam-link-button {
-            --display: inline-block;
-            --margin-top: 15px;
-                --padding: 8px 18px;
-                --background-color: var(--steam-color);
-                --color: #ffffff !important;
-                --text-decoration: none;
-                --border-radius: 20px;
-                --font-size: 0.85em;
-                --font-weight: bold;
-                --text-transform: uppercase;
-                --transition: transform 0.2s, background 0.3s;
-                --cursor: pointer;
-}
-
-.steam-link-button:hover {
-    --background-color: var(--tg-color);
-    --transform: scale(1.1);
-}
-
-.player-card {
-    --cursor: default; /* Сама карточка не кликабельна, только кнопка внутри */
         }
 
+        /* --- СТИЛИ КНОПКИ (БЕЗ ЛИШНИХ ТИРЕ) --- */
+        .steam-link-button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 18px;
+            background-color: var(--steam-color);
+            color: #ffffff !important;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: transform 0.2s, background 0.3s;
+            cursor: pointer;
+        }
+
+        .steam-link-button:hover {
+            background-color: var(--tg-color);
+            transform: scale(1.1);
+        }
+
+        /* --- БАЗОВЫЕ СТИЛИ --- */
         html { scroll-behavior: smooth; }
         body {
-            --font-family: 'Arial', sans-serif;
-            --background-color: var(--bg-color);
-           -- color: var(--text-color);
-          --  margin: 0;
-           -- padding: 0;
-           -- transition: background-color 0.3s, color 0.3s;
+            font-family: 'Arial', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
             position: relative;
             overflow-x: hidden;
         }
 
-        /* --- НОВЫЙ АНИМИРОВАННЫЙ ФОН ИЗ ТОЧЕК --- */
         .bg-dots {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1; /* Строго под контентом */
-            pointer-events: none; /* Чтобы не мешал кликам */
-            
-            /* Создаем паттерн из точек с помощью radial-gradient */
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            pointer-events: none;
             background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
-            background-size: 30px 30px; /* Расстояние между точками */
-            
-            /* Анимация движения */
+            background-size: 30px 30px;
             animation: moveDots 60s linear infinite;
-            opacity: 0.8; /* Общая прозрачность фона */
+            opacity: 0.8;
         }
 
-        /* Описание движения точек (медленно плывут по диагонали) */
         @keyframes moveDots {
             from { background-position: 0 0; }
             to { background-position: 1000px 1000px; }
         }
-        /* ------------------------------------------- */
 
-        /* Кнопка темы */
         .theme-switcher {
-            position: fixed;
-            top: 20px;
-            right: 20px;
+            position: fixed; top: 20px; right: 20px;
             background: var(--card-bg);
             color: var(--text-color);
             border: 2px solid var(--card-border);
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 50px; height: 50px;
             cursor: pointer;
             font-size: 24px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            display: flex; justify-content: center; align-items: center;
             transition: 0.3s;
             z-index: 1000;
             backdrop-filter: blur(5px);
@@ -133,14 +113,11 @@
         .light-theme .theme-switcher .icon-sun { display: none; }
         .light-theme .theme-switcher .icon-moon { display: block; }
 
-        /* Шапка */
         header { 
-            text-align: center; 
-            padding: 60px 20px; 
+            text-align: center; padding: 60px 20px; 
             border-bottom: 2px solid var(--header-border); 
             background: var(--header-bg); 
-            position: relative;
-            z-index: 2;
+            position: relative; z-index: 2;
         }
         .logo { width: 150px; height: 150px; border-radius: 50%; border: 2px solid #333; box-shadow: 0 0 15px var(--logo-shadow); margin-bottom: 20px; transition: 0.3s; }
         h1 { font-size: 3.5em; margin: 0; letter-spacing: 5px; text-transform: uppercase; }
@@ -150,97 +127,46 @@
         nav a { color: var(--text-color); text-decoration: none; margin: 0 15px; font-weight: bold; text-transform: uppercase; font-size: 0.9em; opacity: 0.7; transition: 0.3s; }
         nav a:hover { opacity: 1; color: var(--tg-color); }
 
-        /* Секции */
-        section { 
-            padding: 80px 20px; 
-            max-width: 1200px; 
-            margin: 0 auto; 
-            text-align: center; 
-            position: relative;
-            z-index: 1; /* Контент поверх точек */
-        }
+        section { padding: 80px 20px; max-width: 1200px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
         h2 { font-size: 2.5em; text-transform: uppercase; margin-bottom: 40px; border-bottom: 1px solid var(--footer-border); display: inline-block; padding-bottom: 10px; }
 
-        /* Игроки */
         .roster-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 25px; }
-        /* Обновленные карточки игроков */
-.player-link { 
-    text-decoration: none; 
-    color: inherit; 
-    display: block; 
-}
-
-.player-card { 
-    background-color: var(--card-bg); 
-    border: 2px solid var(--card-border); 
-    width: 220px; 
-    padding: 30px 15px; 
-    border-radius: 15px; 
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-    backdrop-filter: blur(var(--blur-strength));
-    position: relative;
-    overflow: hidden; /* Чтобы описание не вылезало за края */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Скрытое описание по умолчанию */
-.player-info-extra {
-    max-height: 0;
-    opacity: 0;
-    transition: all 0.4s ease;
-    font-size: 0.85em;
-    color: var(--subtitle-color);
-    margin-top: 0;
-    text-align: center;
-}
-
-/* Стиль ссылки на Steam внутри карточки */
-.steam-link-text {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 5px 12px;
-    background: var(--steam-color);
-    color: #fff !important;
-    border-radius: 20px;
-    font-size: 0.8em;
-    text-transform: uppercase;
-}
-
-/* Эффект при наведении на карточку */
-.player-card:hover { 
-    transform: translateY(-10px) scale(1.05); 
-    background-color: var(--card-bg); /* Оставляем прозрачным или меняем на var(--card-hover-bg) */
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-.player-card:hover .player-info-extra {
-    max-height: 100px; /* Раскрываем блок */
-    opacity: 1;
-    margin-top: 15px;
-}
-
-.player-card h3 {
-    margin: 0 0 5px 0;
-    transition: 0.3s;
-}
-
-        /* Хайлайты */
-        .highlights-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
-        .video-card { 
-            background: var(--card-bg); 
-            border: 1px solid var(--card-border); 
-            border-radius: 12px; 
-            overflow: hidden; 
-            transition: 0.3s; 
-            backdrop-filter: blur(5px); 
+        
+        .player-card { 
+            background-color: var(--card-bg); 
+            border: 2px solid var(--card-border); 
+            width: 220px; padding: 30px 15px; border-radius: 15px; 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            position: relative; overflow: hidden;
+            display: flex; flex-direction: column; align-items: center;
+            cursor: default;
         }
+
+        .player-card:hover { 
+            transform: translateY(-10px) scale(1.05); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .player-card.captain { border-color: var(--captain-card-border); background-color: var(--captain-card-bg); }
+
+        .player-info-extra {
+            max-height: 0; opacity: 0;
+            transition: all 0.4s ease;
+            font-size: 0.85em; color: var(--subtitle-color);
+            text-align: center;
+        }
+
+        .player-card:hover .player-info-extra {
+            max-height: 120px; opacity: 1; margin-top: 15px;
+        }
+
+        /* --- ХАЙЛАЙТЫ И ПРОЧЕЕ --- */
+        .highlights-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
+        .video-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; overflow: hidden; transition: 0.3s; backdrop-filter: blur(5px); }
         .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; background: #000; }
         .video-wrapper video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
         .video-info { padding: 15px; text-align: left; }
 
-        /* Соцсети */
         .social-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
         .social-btn {
             display: inline-flex; align-items: center; gap: 12px;
@@ -251,28 +177,14 @@
         .social-btn svg { width: 28px; height: 28px; fill: white; }
         .social-btn.tg { background-color: var(--tg-color); box-shadow: 0 4px 15px rgba(36, 161, 222, 0.3); }
         .social-btn.steam { background-color: var(--steam-color); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); }
-        .social-btn:hover { transform: translateY(-5px); filter: brightness(1.1); }
 
-        /* Футер */
-        footer { 
-            padding: 40px; 
-            text-align: center; 
-            border-top: 1px solid var(--footer-border); 
-            color: var(--footer-text); 
-            position: relative;
-            z-index: 2;
-            backdrop-filter: blur(10px);
-        }
-        .footer-link { color: inherit; text-decoration: none; transition: 0.3s; }
-        .footer-link:hover { text-decoration: underline; opacity: 0.8; }
+        footer { padding: 40px; text-align: center; border-top: 1px solid var(--footer-border); color: var(--footer-text); z-index: 2; backdrop-filter: blur(10px); }
 
         @media (max-width: 600px) { h1 { font-size: 2.2em; } .social-btn { width: 100%; justify-content: center; } }
     </style>
 </head>
 <body>
-
     <div class="bg-dots"></div>
-
     <button id="theme-switcher" class="theme-switcher">
         <span class="icon-sun">☀️</span>
         <span class="icon-moon">🌙</span>
@@ -290,143 +202,76 @@
     </header>
 
     <section id="roster">
-    <h2>Наш состав</h2>
-    <div class="roster-container">
-        
-        <div class="player-card">
-            <h3>Kiporiss</h3>
-            <p style="margin:0; font-weight:bold;">AWPer</p>
-            <div class="player-info-extra">
-                Главная огневая мощь и точные выстрелы из снайперской винтовки.
-                <br>
-                <a href="https://steamcommunity.com/profiles/76561199788032731" target="_blank" class="steam-link-button">
-                    Профиль Steam
-                </a>
-            </div>
-        </div>
-
-        <div class="player-card">
-            <h3>Hell7Staf</h3>
-            <p style="margin:0; font-weight:bold;">Rifler</p>
-            <div class="player-info-extra">
-                Мастер энтри-фрагов и идеального контроля спрея.
-                <br>
-                <a href="https://steamcommunity.com/profiles/76561199508602143" target="_blank" class="steam-link-button">
-                    Профиль Steam
-                </a>
-            </div>
-        </div>
-
-        <div class="player-card captain">
-            <h3>От4Им</h3>
-            <p style="margin:0; font-weight:bold;">Капитан (IGL)</p>
-            <div class="player-info-extra">
-                Тактический мозг команды и координатор действий.
-                <br>
-                <a href="https://steamcommunity.com/id/DST_Ot4Im" target="_blank" class="steam-link-button">
-                    Профиль Steam
-                </a>
-            </div>
-        </div>
-
-        <div class="player-card">
-            <h3>Toto</h3>
-            <p style="margin:0; font-weight:bold;">Anchor</p>
-            <div class="player-info-extra">
-                Главный якорь команды.
-                <br>
-                <a href="https://steamcommunity.com/profiles/76561199169413562" target="_blank" class="steam-link-button">
-                    Профиль Steam
-                </a>
-            </div>
-        </div>
-
-        <div class="player-card">
-            <h3>Voskex</h3>
-            <p style="margin:0; font-weight:bold;">Lurker</p>
-            <div class="player-info-extra">
-                Мастер скрытных перемещений и заходов в спину противнику.
-                <br>
-                <a href="https://steamcommunity.com/profiles/76561199191190126" target="_blank" class="steam-link-button">
-                    Профиль Steam
-                </a>
-            </div>
-        </div>
-
-    </div>
-</section>
-    <section id="highlights">
-        <h2>Лучшие моменты</h2>
-        <div class="highlights-grid">
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <video controls poster="preview1.jpg"><source src="video_1.mp4" type="video/mp4"></video>
+        <h2>Наш состав</h2>
+        <div class="roster-container">
+            <div class="player-card">
+                <h3>Kiporiss</h3>
+                <p style="margin:0; font-weight:bold;">AWPer</p>
+                <div class="player-info-extra">
+                    Главная огневая мощь и точные выстрелы из AWP.
+                    <br>
+                    <a href="https://steamcommunity.com/profiles/76561199788032731" target="_blank" class="steam-link-button">Профиль Steam</a>
                 </div>
-                <div class="video-info"><h3>От4Им: AWP Triple kill</h3><p>Map: Inferno | 2026</p></div>
             </div>
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <video controls poster="preview2.jpg"><source src="video_2.mp4" type="video/mp4"></video>
+            <div class="player-card">
+                <h3>Hell7Staf</h3>
+                <p style="margin:0; font-weight:bold;">Rifler</p>
+                <div class="player-info-extra">
+                    Мастер энтри-фрагов и контроля спрея.
+                    <br>
+                    <a href="https://steamcommunity.com/profiles/76561199508602143" target="_blank" class="steam-link-button">Профиль Steam</a>
                 </div>
-                <div class="video-info"><h3>Kiporiss: QUADRO KILL</h3><p>Map: Dust II | 2026</p></div>
+            </div>
+            <div class="player-card captain">
+                <h3>От4Им</h3>
+                <p style="margin:0; font-weight:bold;">Капитан (IGL)</p>
+                <div class="player-info-extra">
+                    Тактический мозг и координатор команды.
+                    <br>
+                    <a href="https://steamcommunity.com/id/DST_Ot4Im" target="_blank" class="steam-link-button">Профиль Steam</a>
+                </div>
+            </div>
+            <div class="player-card">
+                <h3>Toto</h3>
+                <p style="margin:0; font-weight:bold;">Anchor</p>
+                <div class="player-info-extra">
+                    Надежная защита любой позиции.
+                    <br>
+                    <a href="https://steamcommunity.com/profiles/76561199169413562" target="_blank" class="steam-link-button">Профиль Steam</a>
+                </div>
+            </div>
+            <div class="player-card">
+                <h3>Voskex</h3>
+                <p style="margin:0; font-weight:bold;">Lurker</p>
+                <div class="player-info-extra">
+                    Мастер заходов в спину и скрытности.
+                    <br>
+                    <a href="https://steamcommunity.com/profiles/76561199191190126" target="_blank" class="steam-link-button">Профиль Steam</a>
+                </div>
             </div>
         </div>
     </section>
-
-    <section id="social">
-        <h2>Сообщество команды</h2>
-        <div class="social-container">
-            <a href="https://t.me/DLST_Esport" target="_blank" class="social-btn tg">
-                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
-                Telegram Канал
-            </a>
-            <a href="https://steamcommunity.com/groups/D1LDONS_TEAM" target="_blank" class="social-btn steam">
-                <svg fill="#000000" width="800px" height="800px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
-<title>steam</title>
-<path d="M18.102 12.129c0-0 0-0 0-0.001 0-1.564 1.268-2.831 2.831-2.831s2.831 1.268 2.831 2.831c0 1.564-1.267 2.831-2.831 2.831-0 0-0 0-0.001 0h0c-0 0-0 0-0.001 0-1.563 0-2.83-1.267-2.83-2.83 0-0 0-0 0-0.001v0zM24.691 12.135c0-2.081-1.687-3.768-3.768-3.768s-3.768 1.687-3.768 3.768c0 2.081 1.687 3.768 3.768 3.768v0c2.080-0.003 3.765-1.688 3.768-3.767v-0zM10.427 23.76l-1.841-0.762c0.524 1.078 1.611 1.808 2.868 1.808 1.317 0 2.448-0.801 2.93-1.943l0.008-0.021c0.155-0.362 0.246-0.784 0.246-1.226 0-1.757-1.424-3.181-3.181-3.181-0.405 0-0.792 0.076-1.148 0.213l0.022-0.007 1.903 0.787c0.852 0.364 1.439 1.196 1.439 2.164 0 1.296-1.051 2.347-2.347 2.347-0.324 0-0.632-0.066-0.913-0.184l0.015 0.006zM15.974 1.004c-7.857 0.001-14.301 6.046-14.938 13.738l-0.004 0.054 8.038 3.322c0.668-0.462 1.495-0.737 2.387-0.737 0.001 0 0.002 0 0.002 0h-0c0.079 0 0.156 0.005 0.235 0.008l3.575-5.176v-0.074c0.003-3.12 2.533-5.648 5.653-5.648 3.122 0 5.653 2.531 5.653 5.653s-2.531 5.653-5.653 5.653h-0.131l-5.094 3.638c0 0.065 0.005 0.131 0.005 0.199 0 0.001 0 0.002 0 0.003 0 2.342-1.899 4.241-4.241 4.241-2.047 0-3.756-1.451-4.153-3.38l-0.005-0.027-5.755-2.383c1.841 6.345 7.601 10.905 14.425 10.905 8.281 0 14.994-6.713 14.994-14.994s-6.713-14.994-14.994-14.994c-0 0-0.001 0-0.001 0h0z"></path>
-                </svg>
-                Группа Steam
-            </a>
-        </div>
-    </section>
-
-    <footer>
-        &copy; 2026 D1LDONS TEAM. Все права защищены.
-        <div style="margin-bottom: 10px;">
-        </div>
-        <div style="font-size: 0.85em; opacity: 0.7;">
-            Дизайн и разработка: 
-                <b>Hell7staf & От4Им</b>
-        </div>
-    </footer>
 
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const themeSwitcher = document.getElementById('theme-switcher');
-        const body = document.body;
-        const logo = document.querySelector('.logo');
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeSwitcher = document.getElementById('theme-switcher');
+            const body = document.body;
+            const logo = document.querySelector('.logo');
+            const darkLogo = 'image.png';      
+            const lightLogo = 'logo_white.png'; 
 
-        // Названия твоих файлов изображений
-        const darkLogo = 'image.png';      // Лого для темной темы
-        const lightLogo = 'logo_white.png'; // Лого для светлой темы
+            if (localStorage.getItem('theme') === 'light') {
+                body.classList.add('light-theme');
+                logo.src = lightLogo;
+            }
 
-        // Проверка сохраненной темы при загрузке страницы
-        if (localStorage.getItem('theme') === 'light') {
-            body.classList.add('light-theme');
-            logo.src = lightLogo; // Убрали // здесь
-        }
-
-        themeSwitcher.addEventListener('click', () => {
-            body.classList.toggle('light-theme');
-            const isLight = body.classList.contains('light-theme');
-            
-            // Смена логотипа при клике
-            logo.src = isLight ? lightLogo : darkLogo; // Убрали // здесь
-            
-            // Сохранение выбора в браузере
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            themeSwitcher.addEventListener('click', () => {
+                body.classList.toggle('light-theme');
+                const isLight = body.classList.contains('light-theme');
+                logo.src = isLight ? lightLogo : darkLogo; 
+                localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            });
         });
-    });
-</script>
+    </script>
 </body>
 </html>
