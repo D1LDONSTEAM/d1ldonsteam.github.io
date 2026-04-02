@@ -11,8 +11,8 @@
         :root {
             --bg-color: #050505;
             --text-color: #ffffff;
-            --header-bg: linear-gradient(180deg, #1a1a1a 0%, rgba(5,5,5,0.8) 100%);
-            --header-border: #ffffff;
+            --header-bg: rgba(5, 5, 5, 0.1); /* Почти прозрачный черный */
+    --header-border: rgba(255, 255, 255, 0.1); /* Еле заметная линия снизу */
             --card-bg: rgba(17, 17, 17, 0.9); /* Чуть больше непрозрачности для читаемости */
             --card-border: #333333;
             --card-hover-bg: #ffffff;
@@ -27,14 +27,14 @@
             --steam-color: #171a21;
 
             /* Цвет точек для ТЕМНОЙ темы */
-            --dot-color: rgba(255, 255, 255, 0.2); 
+            --dot-color: rgba(255, 255, 255, 0.7); 
         }
 
         body.light-theme {
             --bg-color: #f4f4f4;
             --text-color: #000000;
-            --header-bg: linear-gradient(180deg, #ffffff 0%, rgba(233,236,239,0.8) 100%);
-            --header-border: #dee2e6;
+            --header-bg: rgba(255, 255, 255, 0.1); /* Почти прозрачный белый */
+            --header-border: rgba(0, 0, 0, 0.05);
             --card-bg: rgba(255, 255, 255, 0.9);
             --card-border: #dee2e6;
             --card-hover-bg: #000000;
