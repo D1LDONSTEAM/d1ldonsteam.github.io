@@ -6,6 +6,10 @@
     <title>D1LDONS TEAM | CS2</title>
     <link rel="icon" href="image.png" type="image/png"> 
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
     <style>
         /* --- ПЕРЕМЕННЫЕ И ТЕМЫ --- */
         :root {
@@ -48,7 +52,7 @@
         /* --- БАЗОВЫЕ СТИЛИ --- */
         html { scroll-behavior: smooth; }
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Inter', 'Arial', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
@@ -120,16 +124,17 @@
             position: relative; z-index: 2;
         }
         .logo { width: 150px; height: 150px; border-radius: 50%; border: 2px solid #333; box-shadow: 0 0 15px var(--logo-shadow); margin-bottom: 20px; transition: 0.3s; }
-        h1 { font-size: 3.5em; margin: 0; letter-spacing: 5px; text-transform: uppercase; }
-        .subtitle { color: var(--subtitle-color); text-transform: uppercase; letter-spacing: 2px; font-size: 1.1em; }
+        h1 { font-family: 'Rajdhani', sans-serif; font-size: 3.5em; font-weight: 700; margin: 0; letter-spacing: 8px; text-transform: uppercase; }
+        h2 { font-family: 'Rajdhani', sans-serif; font-size: 2.5em; font-weight: 700; text-transform: uppercase; margin-bottom: 40px; border-bottom: 1px solid var(--footer-border); display: inline-block; padding-bottom: 10px; letter-spacing: 3px; }
+        h3 { font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 1.3em; letter-spacing: 1.5px; }
+        .subtitle { font-family: 'Rajdhani', sans-serif; color: var(--subtitle-color); text-transform: uppercase; letter-spacing: 4px; font-size: 1.05em; font-weight: 500; }
 
         nav { margin-top: 25px; }
-        nav a { color: var(--text-color); text-decoration: none; margin: 0 15px; font-weight: bold; text-transform: uppercase; font-size: 0.9em; opacity: 0.7; transition: 0.3s; }
+        nav a { font-family: 'Rajdhani', sans-serif; color: var(--text-color); text-decoration: none; margin: 0 15px; font-weight: 600; text-transform: uppercase; font-size: 1em; letter-spacing: 2px; opacity: 0.7; transition: 0.3s; }
         nav a:hover { opacity: 1; color: var(--tg-color); }
 
         /* Секции */
         section { padding: 80px 20px; max-width: 1200px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
-        h2 { font-size: 2.5em; text-transform: uppercase; margin-bottom: 40px; border-bottom: 1px solid var(--footer-border); display: inline-block; padding-bottom: 10px; }
 
         /* Карточки игроков */
         .roster-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 25px; }
@@ -152,6 +157,8 @@
             text-align: center;
         }
         .player-card:hover .player-info-extra { max-height: 120px; opacity: 1; margin-top: 15px; }
+        /* Открыто по тапу (мобильные) */
+        .player-card.open .player-info-extra { max-height: 120px; opacity: 1; margin-top: 15px; }
 
         /* Видео моменты */
         .highlights-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
@@ -176,7 +183,57 @@
         /* Футер */
         footer { padding: 40px; text-align: center; border-top: 1px solid var(--footer-border); color: var(--footer-text); }
 
-        @media (max-width: 600px) { h1 { font-size: 2.2em; } .social-btn { width: 100%; justify-content: center; } }
+        @media (max-width: 600px) { 
+            h1 { font-size: 2.2em; letter-spacing: 4px; }
+            h2 { font-size: 1.8em; }
+            .social-btn { width: 100%; justify-content: center; }
+
+            .roster-container { flex-direction: column; align-items: stretch; gap: 12px; padding: 0 10px; }
+            .player-card {
+                width: auto;
+                flex-direction: row;
+                padding: 18px 20px;
+                border-radius: 12px;
+                align-items: center;
+                gap: 16px;
+                cursor: pointer;
+            }
+            .player-card:hover { transform: none; box-shadow: none; }
+            .player-card.open { box-shadow: 0 4px 20px rgba(0,0,0,0.25); }
+            .player-card .player-main { text-align: left; flex: 1; }
+            .player-card h3 { margin: 0 0 2px 0; font-size: 1.2em; }
+            .player-card p { margin: 0; font-size: 0.85em; }
+            .player-info-extra {
+                display: none;
+                max-height: none;
+                opacity: 1;
+                margin-top: 0;
+                text-align: left;
+            }
+            .player-card.open .player-info-extra {
+                display: block;
+                max-height: none;
+                margin-top: 0;
+            }
+            .player-card::after {
+                content: '›';
+                font-size: 1.6em;
+                opacity: 0.4;
+                transition: transform 0.3s;
+                flex-shrink: 0;
+            }
+            .player-card.open::after {
+                transform: rotate(90deg);
+                opacity: 0.8;
+            }
+            /* На мобиле раскрытая карточка — вертикальная */
+            .player-card.open {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .player-card.open .player-main { width: 100%; }
+            .player-card.open .player-info-extra { width: 100%; margin-top: 10px; }
+        }
     </style>
 </head>
 <body>
@@ -201,40 +258,50 @@
         <h2>Наш состав</h2>
         <div class="roster-container">
             <div class="player-card">
+                <div class="player-main">
                 <h3>Kiporiss</h3>
                 <p style="margin:0; font-weight:bold;">AWPer</p>
+                </div>
                 <div class="player-info-extra">
                     Главная огневая мощь и точные выстрелы из AWP.
                     <br><a href="https://steamcommunity.com/profiles/76561199788032731" target="_blank" class="steam-link-button">Профиль Steam</a>
                 </div>
             </div>
             <div class="player-card">
+                <div class="player-main">
                 <h3>Hell7Staf</h3>
                 <p style="margin:0; font-weight:bold;">Rifler</p>
+                </div>
                 <div class="player-info-extra">
                     Мастер энтри-фрагов и контроля спрея.
                     <br><a href="https://steamcommunity.com/profiles/76561199508602143" target="_blank" class="steam-link-button">Профиль Steam</a>
                 </div>
             </div>
             <div class="player-card captain">
+                <div class="player-main">
                 <h3>От4Им</h3>
                 <p style="margin:0; font-weight:bold;">Капитан (IGL)</p>
+                </div>
                 <div class="player-info-extra">
                     Тактический мозг и координатор команды.
                     <br><a href="https://steamcommunity.com/id/DST_Ot4Im" target="_blank" class="steam-link-button">Профиль Steam</a>
                 </div>
             </div>
             <div class="player-card">
+                <div class="player-main">
                 <h3>Toto</h3>
                 <p style="margin:0; font-weight:bold;">Anchor</p>
+                </div>
                 <div class="player-info-extra">
                     Главный якорь команды.
                     <br><a href="https://steamcommunity.com/profiles/76561199169413562" target="_blank" class="steam-link-button">Профиль Steam</a>
                 </div>
             </div>
             <div class="player-card">
+                <div class="player-main">
                 <h3>Voskex</h3>
                 <p style="margin:0; font-weight:bold;">Lurker</p>
+                </div>
                 <div class="player-info-extra">
                     Мастер заходов в спину и скрытности.
                     <br><a href="https://steamcommunity.com/profiles/76561199191190126" target="_blank" class="steam-link-button">Профиль Steam</a>
@@ -300,6 +367,15 @@
                 const isLight = body.classList.contains('light-theme');
                 if(logo) logo.src = isLight ? lightLogo : darkLogo; 
                 localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            });
+
+            // Тап по карточке на мобильных
+            const isTouchDevice = () => window.matchMedia('(max-width: 600px)').matches;
+            document.querySelectorAll('.player-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    if (!isTouchDevice()) return;
+                    card.classList.toggle('open');
+                });
             });
         });
     </script>
