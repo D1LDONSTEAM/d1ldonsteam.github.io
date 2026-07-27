@@ -308,6 +308,13 @@
       linear-gradient(210deg, rgba(24,240,224,.16), transparent 50%),
       url('clip1-poster.jpg') center/cover;
   }
+/* Прозрачная / стеклянная панель для клипа */
+  .clip-poster.glass {
+    background: linear-gradient(135deg, rgba(18, 18, 24, 0.45) 0%, rgba(24, 240, 224, 0.12) 100%);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(24, 240, 224, 0.25);
+  }
   .clip-poster::before{
     content:''; position:absolute; top:0; right:0; width:120px; height:120px;
     background:linear-gradient(135deg, transparent 50%, rgba(255,33,88,.14) 50%);
@@ -659,7 +666,7 @@
         </div>
       </div>
       <div class="clip reveal-item">
-        <div class="clip-poster" data-video-target="clip-video-2">
+        <div class="clip-poster glass" data-video-target="clip-video-2">
           <span class="moment-tag">Quadro Kill</span>
           <span class="player-name">Kiporiss</span>
           <span class="play-ring"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
