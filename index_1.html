@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D1LDONS TEAM | CS2</title>
+<link rel="icon" href="image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;500;600;700&family=Exo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #08080b;
+    --surface: #121218;
+    --surface-2: #1a1a22;
+    --line: #26262f;
+    --text: #eef0f4;
+    --muted: #8b8c9a;
+    --pink: #ff2158;
+    --cyan: #18f0e0;
+    --win: #29e07a;
+    --loss: #ff4d5e;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  html{ background:var(--bg); }
+  body{
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -5%, rgba(255,33,88,.14), transparent 60%),
+      radial-gradient(ellipse 900px 600px at 90% 10%, rgba(24,240,224,.10), transparent 60%);
+    color:var(--text);
+    font-family:'Exo 2', sans-serif;
+    font-weight:500;
+    overflow-x:hidden;
+  }
+
+  /* ---------- ANIMATED BACKGROUND ---------- */
+  .aurora{ position:fixed; inset:-15%; z-index:-3; pointer-events:none; overflow:hidden; }
+  .aurora span{
+    position:absolute; width:56vw; height:56vw; min-width:520px; min-height:520px;
+    border-radius:50%; filter:blur(90px); opacity:.30; mix-blend-mode:screen;
+  }
+  .aurora span:nth-child(1){ background:var(--pink); top:-14%; left:-12%; animation:auroraMove1 28s ease-in-out infinite; }
+  .aurora span:nth-child(2){ background:var(--cyan); bottom:-18%; right:-10%; animation:auroraMove2 34s ease-in-out infinite; }
+  @keyframes auroraMove1{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    50%{ transform:translate(9vw,7vh) scale(1.18); }
+  }
+  @keyframes auroraMove2{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    50%{ transform:translate(-7vw,-9vh) scale(1.12); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .aurora span{ animation:none; }
+  }
+
+  /* ---------- SCROLL PROGRESS ---------- */
+  .scroll-progress{
+    position:fixed; top:0; left:0; height:3px; width:0%; z-index:200;
+    background:linear-gradient(90deg, var(--pink), var(--cyan));
+    box-shadow:0 0 10px rgba(255,33,88,.5);
+  }
+
+  h1,h2,h3, .display{
+    font-family:'Teko', sans-serif;
+    font-weight:600;
+    letter-spacing:.02em;
+    text-transform:uppercase;
+    line-height:.95;
+  }
+
+  a{ color:inherit; text-decoration:none; }
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 24px; }
+  section{ padding:110px 0; position:relative; }
+  .eyebrow{
+    font-family:'Exo 2',sans-serif; font-weight:700; letter-spacing:.32em;
+    text-transform:uppercase; font-size:13px; color:var(--pink);
+    white-space:nowrap; display:inline-block;
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    background:rgba(8,8,11,.72); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{ display:flex; align-items:center; justify-content:space-between; padding:14px 24px; }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand img{ height:34px; width:34px; border-radius:6px; object-fit:cover; }
+  .brand span{ font-family:'Teko',sans-serif; font-size:26px; letter-spacing:.05em; }
+  .navlinks{ display:flex; gap:34px; font-size:16px; font-weight:600; letter-spacing:.03em; }
+  .navlinks a{ color:var(--muted); transition:color .2s; position:relative; }
+  .navlinks a:hover{ color:var(--text); }
+  .navlinks a:focus-visible{ outline:2px solid var(--cyan); outline-offset:4px; }
+  .navlinks a::after{
+    content:''; position:absolute; left:0; bottom:-6px; height:2px; width:0;
+    background:var(--pink); transition:width .2s;
+  }
+  .navlinks a:hover::after{ width:100%; }
+  .navlinks a.active{ color:var(--text); }
+  .navlinks a.active::after{ width:100%; }
+  .burger{
+    display:none; flex-direction:column; justify-content:center; gap:5px;
+    width:36px; height:32px; background:none; border:none; cursor:pointer; padding:0;
+  }
+  .burger:focus-visible{ outline:2px solid var(--cyan); outline-offset:3px; }
+  .burger span{
+    display:block; width:100%; height:2px; background:var(--text);
+    transition:transform .25s ease, opacity .2s ease;
+  }
+  .burger.open span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+  .burger.open span:nth-child(2){ opacity:0; }
+  .burger.open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding-top:170px; padding-bottom:60px; position:relative;
+  }
+  .hero::before{
+    content:''; position:absolute; inset:0; z-index:-1; opacity:.5;
+    background-image:
+      linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+    background-size:44px 44px;
+    mask-image:linear-gradient(to bottom, black, transparent 75%);
+  }
+  .hero-grid{
+    display:grid; grid-template-columns:1.3fr .9fr; gap:50px; align-items:center;
+  }
+  .hero h1{
+    font-size:clamp(64px, 10vw, 132px);
+    background:linear-gradient(100deg, var(--text) 40%, var(--pink) 75%, var(--cyan) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .hero .sub{
+    font-size:20px; color:var(--muted); max-width:480px; margin-top:18px; font-weight:600;
+  }
+  .cta-row{ display:flex; gap:16px; margin-top:38px; flex-wrap:wrap; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; padding:14px 26px;
+    font-family:'Exo 2',sans-serif; font-weight:700; font-size:16px; letter-spacing:.04em;
+    text-transform:uppercase; border-radius:2px; clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);
+    transition:transform .15s, box-shadow .15s;
+  }
+  .btn-primary{ background:var(--pink); color:#0a0a0a; }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 8px 24px rgba(255,33,88,.35); }
+  .btn-ghost{ border:1px solid var(--line); color:var(--text); }
+  .btn-ghost:hover{ border-color:var(--cyan); color:var(--cyan); }
+  .btn:focus-visible{ outline:2px solid var(--cyan); outline-offset:3px; }
+
+  .hero-logo{
+    position:relative; justify-self:center; width:min(340px, 90%);
+    aspect-ratio:1; border-radius:8px; overflow:hidden;
+    border:1px solid var(--line);
+    box-shadow:0 0 0 1px rgba(255,255,255,.03), 0 30px 80px -20px rgba(255,33,88,.35);
+  }
+  .hero-logo img{ width:100%; height:100%; object-fit:cover; }
+  .hero-logo::after{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(160deg, transparent 55%, rgba(24,240,224,.18));
+  }
+
+  /* ---------- TICKER ---------- */
+  .ticker-outer{
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    background:var(--surface); overflow:hidden; white-space:nowrap;
+  }
+  .ticker-track{
+    display:inline-flex; gap:60px; padding:16px 0;
+    animation:scroll 26s linear infinite;
+  }
+  .ticker-outer:hover .ticker-track{ animation-play-state:paused; }
+  @keyframes scroll{ from{ transform:translateX(0);} to{ transform:translateX(-50%);} }
+  .tick-item{ display:inline-flex; align-items:center; gap:10px; font-size:15px; font-weight:700; letter-spacing:.03em; }
+  .tick-item .tag{ color:var(--pink); }
+  .tick-item .vs{ color:var(--muted); font-weight:600; }
+  @media (prefers-reduced-motion: reduce){ .ticker-track{ animation:none; } }
+
+  /* ---------- SECTION HEADS ---------- */
+  .head{ margin-bottom:52px; }
+  .head h2{ font-size:clamp(40px,6vw,64px); margin-top:6px; }
+
+  /* ---------- STATS ---------- */
+  .stat-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line); border-radius:4px; overflow:hidden;
+  }
+  .stat-card{ background:var(--surface); padding:32px 24px; transition:box-shadow .3s ease; }
+  .stat-card:hover{ box-shadow:inset 0 0 0 1px rgba(255,33,88,.35), 0 16px 30px -18px rgba(255,33,88,.4); }
+  .stat-card .num{
+    font-family:'Teko',sans-serif; font-size:56px; line-height:1;
+    color:var(--text);
+  }
+  .stat-card .num em{ font-style:normal; color:var(--pink); }
+  .stat-card .lbl{ margin-top:8px; color:var(--muted); font-size:14px; letter-spacing:.08em; text-transform:uppercase; font-weight:700; }
+  .stat-note{ margin-top:16px; font-size:13px; color:var(--muted); }
+
+  /* ---------- MATCHES ---------- */
+  .timeline{ display:flex; flex-direction:column; gap:1px; background:var(--line); border:1px solid var(--line); border-radius:4px; overflow:hidden; }
+  .tl-item{ display:flex; gap:26px; align-items:flex-start; background:var(--surface); padding:26px 28px; transition:background .3s ease, box-shadow .3s ease; }
+  .tl-item.active{ background:var(--surface-2); box-shadow:inset 3px 0 0 var(--pink); }
+  .tl-item.active .tl-marker{ color:var(--cyan); text-shadow:0 0 18px rgba(24,240,224,.55); }
+  .tl-marker{
+    font-family:'Teko',sans-serif; font-size:34px; color:var(--pink); line-height:1;
+    flex-shrink:0; min-width:44px;
+  }
+  .tl-content h3{ font-size:26px; }
+  .tl-content p{ color:var(--muted); font-size:15px; margin-top:6px; max-width:640px; line-height:1.5; }
+
+  /* ---------- ROSTER ---------- */
+  .roster-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:22px; }
+  .player-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:4px;
+    padding:26px 22px; position:relative; overflow:hidden;
+    transition:border-color .2s, box-shadow .3s, transform .2s ease;
+  }
+  .player-card:hover{ border-color:var(--pink); box-shadow:0 24px 44px -22px rgba(255,33,88,.45); transform:translateY(-4px); }
+  .avatar-slot{
+    width:56px; height:56px; border-radius:8px; margin-bottom:14px;
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(150deg, rgba(255,33,88,.22), rgba(24,240,224,.16)), var(--surface-2);
+    border:1px solid var(--line);
+    font-family:'Teko',sans-serif; font-size:28px; color:var(--text);
+  }
+  .player-card .id{ font-size:13px; color:var(--muted); font-weight:700; letter-spacing:.1em; }
+  .player-card h3{ font-size:38px; margin-top:6px; }
+  .player-card .role{ color:var(--cyan); font-weight:700; font-size:14px; letter-spacing:.06em; text-transform:uppercase; margin-top:2px; }
+  .player-card p{ margin-top:14px; color:var(--muted); font-size:15px; line-height:1.5; }
+  .player-card .steam{
+    display:inline-flex; margin-top:18px; font-size:14px; font-weight:700;
+    color:var(--text); border-bottom:none;
+  }
+  .player-card .steam:hover{ color:var(--pink); }
+  .player-card .steam:focus-visible{ outline:2px solid var(--cyan); outline-offset:3px; }
+  .player-card .corner{
+    position:absolute; top:0; right:0; width:60px; height:60px;
+    background:linear-gradient(135deg, transparent 50%, rgba(255,33,88,.15) 50%);
+  }
+  .p-stats{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line); border-radius:3px;
+    margin-top:18px; overflow:hidden;
+  }
+  .p-stat{ background:var(--surface-2); padding:10px 8px; text-align:center; }
+  .p-stat .v{ font-family:'Teko',sans-serif; font-size:24px; line-height:1; color:var(--cyan); }
+  .p-stat .l{ font-size:10.5px; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; font-weight:700; margin-top:3px; }
+  .lvl-pill{
+    display:inline-flex; align-items:center; gap:6px; margin-top:14px;
+    font-size:13px; font-weight:700; color:var(--muted);
+  }
+  .lvl-pill .rating{
+    font-family:'Teko',sans-serif; font-size:19px; letter-spacing:.02em;
+    color:var(--pink); font-weight:600;
+  }
+  .roster-grid .vacant{ grid-column:1 / -1; }
+  .player-card.vacant{
+    border-style:dashed; border-color:var(--line);
+    display:flex; flex-direction:row; align-items:center; gap:24px;
+    justify-content:flex-start; padding:30px 32px;
+  }
+  .player-card.vacant:hover{ border-color:var(--cyan); transform:translateY(-4px); }
+  .player-card.vacant .slot-icon{
+    width:52px; height:52px; border-radius:50%; border:1px dashed var(--muted);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    font-family:'Teko',sans-serif; font-size:30px; color:var(--muted);
+  }
+  .player-card.vacant .slot-text h3{ font-size:32px; color:var(--muted); }
+  .player-card.vacant .role{ color:var(--muted); }
+  .player-card.vacant p{ margin-top:6px; }
+  .player-card.vacant .status-pill{
+    display:inline-flex; align-items:center; gap:7px; margin-top:14px;
+    font-size:12px; font-weight:700; letter-spacing:.05em; text-transform:uppercase;
+    color:var(--cyan); background:rgba(24,240,224,.10); padding:6px 12px; border-radius:20px;
+  }
+  .status-pill .blip{
+    width:7px; height:7px; border-radius:50%; background:var(--cyan);
+    animation:blip 1.6s ease-in-out infinite;
+  }
+  @keyframes blip{ 0%,100%{ opacity:1; } 50%{ opacity:.25; } }
+  @media (prefers-reduced-motion: reduce){ .status-pill .blip{ animation:none; } }
+  @media (max-width:640px){
+    .player-card.vacant{ flex-direction:column; text-align:center; }
+  }
+
+  /* ---------- HIGHLIGHTS ---------- */
+  .clip-grid{ display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  .clip{ background:var(--surface); border:1px solid var(--line); border-radius:4px; overflow:hidden; position:relative; transition:box-shadow .3s ease; }
+  .clip:hover{ box-shadow:0 24px 44px -22px rgba(24,240,224,.4); }
+  .clip video{ width:100%; display:block; background:#000; aspect-ratio:16/9; }
+  .clip-info{ padding:18px 20px; display:flex; align-items:center; justify-content:space-between; }
+  .clip-info h3{ font-size:26px; }
+  .clip-info .tag{ font-size:13px; color:var(--muted); font-weight:700; }
+
+  .clip-poster{
+    position:absolute; inset:0; bottom:66px; z-index:5; cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+    background:
+      linear-gradient(155deg, rgba(255,33,88,.20), transparent 55%),
+      linear-gradient(210deg, rgba(24,240,224,.14), transparent 50%),
+      var(--surface-2);
+    overflow:hidden; transition:opacity .45s ease, visibility .45s ease, transform .45s ease;
+  }
+  .clip-poster.has-shot{
+    background:
+      linear-gradient(155deg, rgba(255,33,88,.32), rgba(8,8,11,.78) 65%),
+      linear-gradient(210deg, rgba(24,240,224,.16), transparent 50%),
+      url('clip1-poster.jpg') center/cover;
+  }
+  .clip-poster::before{
+    content:''; position:absolute; top:0; right:0; width:120px; height:120px;
+    background:linear-gradient(135deg, transparent 50%, rgba(255,33,88,.14) 50%);
+  }
+  .clip-poster::after{
+    content:''; position:absolute; bottom:0; left:0; width:90px; height:90px;
+    background:linear-gradient(-45deg, transparent 50%, rgba(24,240,224,.12) 50%);
+  }
+  .clip-poster.hidden{ opacity:0; visibility:hidden; transform:scale(1.04); }
+  .clip-poster .moment-tag{
+    font-family:'Teko',sans-serif; font-size:46px; letter-spacing:.03em; line-height:1;
+    color:var(--pink); text-transform:uppercase;
+  }
+  .clip-poster .player-name{
+    font-family:'Exo 2',sans-serif; font-weight:700; font-size:15px; letter-spacing:.1em;
+    color:var(--text); text-transform:uppercase;
+  }
+  .clip-poster .play-ring{
+    margin-top:8px; width:60px; height:60px; border-radius:50%;
+    border:2px solid var(--pink); display:flex; align-items:center; justify-content:center;
+    animation:ringPulse 2.2s ease-in-out infinite;
+  }
+  .clip-poster .play-ring svg{ width:20px; height:20px; margin-left:3px; fill:var(--pink); }
+  @keyframes ringPulse{
+    0%,100%{ box-shadow:0 0 0 0 rgba(255,33,88,.35); }
+    50%{ box-shadow:0 0 0 10px rgba(255,33,88,0); }
+  }
+  @media (prefers-reduced-motion: reduce){ .clip-poster .play-ring{ animation:none; } .clip-poster{ transition:opacity .3s ease, visibility .3s ease; } .clip-poster.hidden{ transform:none; } }
+
+  /* ---------- COMMUNITY ---------- */
+  .community{ text-align:center; }
+  .community h2{ font-size:clamp(40px,7vw,72px); }
+  .community p{ color:var(--muted); max-width:520px; margin:14px auto 34px; font-size:18px; }
+  .social-row{ display:flex; gap:18px; justify-content:center; flex-wrap:wrap; }
+
+  footer{
+    border-top:1px solid var(--line); padding:34px 0; text-align:center;
+    color:var(--muted); font-size:14px;
+  }
+  footer strong{ color:var(--text); }
+
+  @media (max-width: 860px){
+    .navlinks{
+      position:fixed; top:63px; left:0; right:0; z-index:99;
+      flex-direction:column; gap:0; padding:8px 24px 18px;
+      background:rgba(8,8,11,.97); backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--line);
+      max-height:0; overflow:hidden; transition:max-height .3s ease;
+    }
+    .navlinks.open{ max-height:340px; }
+    .navlinks a{ padding:14px 0; border-bottom:1px solid var(--line); font-size:18px; }
+    .navlinks a:last-child{ border-bottom:none; }
+    .burger{ display:flex; }
+    .hero-grid{ grid-template-columns:1fr; }
+    .hero-logo{ order:-1; width:200px; }
+    .stat-grid{ grid-template-columns:repeat(2,1fr); }
+    .tl-item{ flex-direction:column; gap:10px; padding:22px 20px; }
+    .roster-grid{ grid-template-columns:1fr 1fr; }
+    .clip-grid{ grid-template-columns:1fr; }
+    section{ padding:70px 0; }
+  }
+  @media (max-width: 480px){
+    .roster-grid{ grid-template-columns:1fr; }
+    .eyebrow{ letter-spacing:.16em; }
+  }
+
+  /* ---------- SCROLL REVEAL ---------- */
+  .reveal{
+    opacity:0; transform:translateY(28px);
+    transition:opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1);
+    will-change:opacity, transform;
+  }
+  .reveal.is-visible{ opacity:1; transform:translateY(0); }
+  .reveal-group.is-visible .reveal-item{ opacity:1; transform:translateY(0); }
+  .reveal-item{
+    opacity:0; transform:translateY(28px);
+    transition:opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1);
+  }
+  .reveal-item:nth-child(1){ transition-delay:.02s; }
+  .reveal-item:nth-child(2){ transition-delay:.10s; }
+  .reveal-item:nth-child(3){ transition-delay:.18s; }
+  .reveal-item:nth-child(4){ transition-delay:.26s; }
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal, .reveal-item{ opacity:1 !important; transform:none !important; transition:none !important; }
+    .ticker-track{ animation:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<div class="aurora" aria-hidden="true">
+  <span></span><span></span>
+</div>
+
+<header>
+  <nav class="wrap">
+    <a class="brand" href="#top">
+      <img src="image.png" alt="D1LDONS TEAM logo">
+      <span>D1LDONS</span>
+    </a>
+    <div class="navlinks" id="navlinks">
+      <a href="#stats">Статистика</a>
+      <a href="#road">Планы</a>
+      <a href="#roster">Состав</a>
+      <a href="#highlights">Моменты</a>
+      <a href="#social">Сообщество</a>
+    </div>
+    <button class="burger" id="burgerBtn" aria-label="Открыть меню" aria-expanded="false" aria-controls="navlinks">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div class="reveal is-visible">
+      <span class="eyebrow">Counter-Strike 2 Official Roster</span>
+      <h1>D1LDONS<br>TEAM</h1>
+      <p class="sub">Тактика, точность и командная химия. Следите за составом, статистикой и лучшими моментами с карт.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#road">Наши планы</a>
+        <a class="btn btn-ghost" href="#roster">Смотреть состав</a>
+      </div>
+    </div>
+    <div class="hero-logo reveal is-visible" id="heroLogo"><img src="image.png" alt="D1LDONS TEAM logo"></div>
+  </div>
+</section>
+
+<!--
+  Эта строка статична и не привязана к расписанию — правьте только когда
+  меняются сами факты (роль игрока, вехи, статистика сезона), а не еженедельно.
+-->
+<div class="ticker-outer" aria-label="Ключевые факты о команде">
+  <div class="ticker-track">
+    <span class="tick-item"><span class="tag">AWP</span> Kiporiss оставляет последнюю надежду на победу</span>
+    <span class="tick-item"><span class="tag">IGL</span> Ot4Um предлагает сыграть "Дэфолт"</span>
+    <span class="tick-item"><span class="tag">RIFLER</span> Hell7Staf когда</span>
+    <span class="tick-item"><span class="tag">🪵</span> </span>
+    <span class="tick-item"><span class="tag">STATS</span> Игроки достигли 51% win rate на всех картах</span>
+    <span class="tick-item"><span class="tag">ANCHOR</span> Toto держит оборону на мошонке</span>
+    <span class="tick-item"><span class="tag">AWP</span> Kiporiss оставляет последнюю надежду на победу</span>
+    <span class="tick-item"><span class="tag">IGL</span> Ot4Um предлагает сыграть "Дэфолт"</span>
+    <span class="tick-item"><span class="tag">СЕЗОН 4</span> Игроки достигли 51 win rate на всех картах</span>
+    <span class="tick-item"><span class="tag">ANCHOR</span> Toto держит оборону на мошонке</span>
+    <span class="tick-item"><span class="tag">🪵</span> </span>
+    <span class="tick-item"><span class="tag">RIFLER</span> Hell7Staf когда</span>
+    <span class="tick-item"><span class="tag">ANCHOR</span> Toto держит оборону на мошонке</span>
+    <span class="tick-item"><span class="tag">AWP</span> Kiporiss оставляет последнюю надежду на победу</span>
+  </div>
+</div>
+
+
+<section id="stats">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="eyebrow">CS2 Premier  Сезон 4</span>
+      <h2>Статистика сезона</h2>
+    </div>
+    <div class="stat-grid reveal-group">
+      <div class="stat-card reveal-item">
+        <div class="num" data-target="51" data-decimals="0"><em>51</em>%</div>
+        <div class="lbl">Средний Win rate</div>
+      </div>
+      <div class="stat-card reveal-item">
+        <div class="num" data-target="0.98" data-decimals="2">0.98</div>
+        <div class="lbl">Средний K/D</div>
+      </div>
+      <div class="stat-card reveal-item">
+        <div class="num" data-target="647" data-decimals="0">647</div>
+        <div class="lbl">Матчей сыграно</div>
+      </div>
+      <div class="stat-card reveal-item">
+        <div class="num" data-target="10063" data-decimals="0" data-grouped="true">10 063</div>
+        <div class="lbl">Средний пик рейтинга</div>
+      </div>
+    </div>
+    <p class="stat-note">Данные — CS2 Premier, Сезон 4, весь основной состав (4 игрока).</p>
+  </div>
+</section>
+
+<section id="faceit-stats">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="eyebrow">FACEIT · Сезон 8</span>
+      <h2>Общая статистика</h2>
+    </div>
+    <div class="stat-grid reveal-group">
+      <div class="stat-card reveal-item">
+        <div class="num" data-target="47" data-decimals="0"><em>47</em>%</div>
+        <div class="lbl">Средний Win rate</div>
+      </div>
+      <div class="stat-card reveal-item">
+        <div class="num" data-target="0.86" data-decimals="2">0.86</div>
+        <div class="lbl">Средний K/D</div>
+      </div>
+      <div class="stat-card reveal-item">
+        <div class="num" data-target="95" data-decimals="0">95</div>
+        <div class="lbl">Матчей сыграно</div>
+      </div>
+      <div class="stat-card reveal-item">
+        <div class="num" data-target="76.9" data-decimals="1">76.9</div>
+        <div class="lbl">Средний ADR</div>
+      </div>
+    </div>
+    <p class="stat-note">Данные — FACEIT, Сезон 8, весь основной состав (4 игрока).</p>
+  </div>
+</section>
+
+<section id="road">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="eyebrow">Наши планы</span>
+      <h2>Планы команды</h2>
+    </div>
+    <div class="timeline reveal-group">
+      <div class="tl-item reveal-item">
+        <div class="tl-marker">01</div>
+        <div class="tl-content">
+          <h3>Найти пятого игрока</h3>
+          <p>Закрыть последнюю позицию в основном составе и выйти на полноценные командные тренировки.</p>
+        </div>
+      </div>
+      <div class="tl-item reveal-item">
+        <div class="tl-marker">02</div>
+        <div class="tl-content">
+          <h3>Выйти на LAN турниры</h3>
+          <p>Начать регулярно участвовать в открытых кубках и региональных отборочных.</p>
+        </div>
+      </div>
+      <div class="tl-item reveal-item">
+        <div class="tl-marker">03</div>
+        <div class="tl-content">
+          <h3>Поднять средний рейтинг состава</h3>
+          <p>Стабилизировать игру всей пятёркой и повысить средний win rate в CS2 Premier.</p>
+        </div>
+      </div>
+      <div class="tl-item reveal-item">
+        <div class="tl-marker">04</div>
+        <div class="tl-content">
+          <h3>Расширить сообщество</h3>
+          <p>Развивать Telegram-канал и Steam-группу, привлекать зрителей и потенциальных партнёров.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="roster">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="eyebrow">Основной состав</span>
+      <h2>Наш состав</h2>
+    </div>
+    <div class="roster-grid reveal-group">
+      <div class="player-card reveal-item">
+        <div class="corner"></div>
+        <div class="avatar-slot">K</div>
+        <div class="id">Игрок 01</div>
+        <h3>Kiporiss</h3>
+        <div class="role">AWPer</div>
+        <p>Главная огневая мощь и точные выстрелы из AWP.</p>
+        <span class="lvl-pill">CS2 Premier Сезон 4 · <span class="rating">11 750</span></span>
+        <div class="p-stats">
+          <div class="p-stat"><div class="v">55.4%</div><div class="l">Win rate</div></div>
+          <div class="p-stat"><div class="v">1.09</div><div class="l">K/D</div></div>
+          <div class="p-stat"><div class="v">35.5%</div><div class="l">HS%</div></div>
+        </div>
+        <a class="steam" href="https://steamcommunity.com/profiles/76561199788032731" target="_blank" rel="noopener">Профиль Steam →</a>
+      </div>
+      <div class="player-card reveal-item">
+        <div class="corner"></div>
+        <div class="avatar-slot">H</div>
+        <div class="id">Игрок 02</div>
+        <h3>Hell7Staf</h3>
+        <div class="role">Rifler</div>
+        <p>Мастер энтри-фрагов и контроля спрея.</p>
+        <span class="lvl-pill">CS2 Premier Сезон 4 · <span class="rating">6 444</span></span>
+        <div class="p-stats">
+          <div class="p-stat"><div class="v">50.7%</div><div class="l">Win rate</div></div>
+          <div class="p-stat"><div class="v">0.97</div><div class="l">K/D</div></div>
+          <div class="p-stat"><div class="v">42%</div><div class="l">HS%</div></div>
+        </div>
+        <a class="steam" href="https://steamcommunity.com/profiles/76561199508602143" target="_blank" rel="noopener">Профиль Steam →</a>
+      </div>
+      <div class="player-card reveal-item">
+        <div class="corner"></div>
+        <div class="avatar-slot">O</div>
+        <div class="id">Игрок 03</div>
+        <h3>Ot4Um</h3>
+        <div class="role">Капитан · IGL</div>
+        <p>Тактический мозг и координатор команды.</p>
+        <span class="lvl-pill">CS2 Premier Сезон 4 · <span class="rating">12 451</span></span>
+        <div class="p-stats">
+          <div class="p-stat"><div class="v">48%</div><div class="l">Win rate</div></div>
+          <div class="p-stat"><div class="v">0.93</div><div class="l">K/D</div></div>
+          <div class="p-stat"><div class="v">46.2%</div><div class="l">HS%</div></div>
+        </div>
+        <a class="steam" href="https://steamcommunity.com/id/DST_Ot4Im" target="_blank" rel="noopener">Профиль Steam →</a>
+      </div>
+      <div class="player-card reveal-item">
+        <div class="corner"></div>
+        <div class="avatar-slot">T</div>
+        <div class="id">Игрок 04</div>
+        <h3>Toto</h3>
+        <div class="role">Anchor</div>
+        <p>Главный якорь команды.</p>
+        <span class="lvl-pill">CS2 Premier Сезон 4 · <span class="rating">9 605</span></span>
+        <div class="p-stats">
+          <div class="p-stat"><div class="v">50.5%</div><div class="l">Win rate</div></div>
+          <div class="p-stat"><div class="v">0.92</div><div class="l">K/D</div></div>
+          <div class="p-stat"><div class="v">39.2%</div><div class="l">HS%</div></div>
+        </div>
+        <a class="steam" href="https://steamcommunity.com/profiles/76561199169413562" target="_blank" rel="noopener">Профиль Steam →</a>
+      </div>
+      <div class="player-card vacant reveal-item">
+        <div class="slot-icon">?</div>
+        <div class="slot-text">
+          <div class="id">Игрок 05</div>
+          <h3>В поиске</h3>
+          <div class="role">Открытая позиция</div>
+          <p>Ищем пятого игрока в основной состав.</p>
+          <span class="status-pill"><span class="blip"></span>Идёт отбор</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="highlights">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="eyebrow">Broadcast reel</span>
+      <h2>Лучшие моменты</h2>
+    </div>
+    <div class="clip-grid reveal-group">
+      <div class="clip reveal-item">
+        <div class="clip-poster has-shot" data-video-target="clip-video-1">
+          <span class="moment-tag">Triple Kill</span>
+          <span class="player-name">Ot4Um</span>
+          <span class="play-ring"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+        </div>
+        <video id="clip-video-1" src="video_1.mp4" controls preload="metadata"></video>
+        <div class="clip-info">
+          <h3>Ot4Um: AWP Triple kill</h3>
+          <span class="tag">Inferno · 2026</span>
+        </div>
+      </div>
+      <div class="clip reveal-item">
+        <div class="clip-poster" data-video-target="clip-video-2">
+          <span class="moment-tag">Quadro Kill</span>
+          <span class="player-name">Kiporiss</span>
+          <span class="play-ring"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+        </div>
+        <video id="clip-video-2" src="video_2.mp4" controls preload="metadata"></video>
+        <div class="clip-info">
+          <h3>Kiporiss: Quadro kill</h3>
+          <span class="tag">Dust II · 2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="social" class="community">
+  <div class="wrap reveal">
+    <span class="eyebrow">Будьте на связи</span>
+    <h2>Сообщество команды</h2>
+    <p>Новости, анонсы матчей и закулисье — в наших соцсетях.</p>
+    <div class="social-row">
+      <a class="btn btn-primary" href="https://t.me/DLST_Esport" target="_blank" rel="noopener">Telegram канал</a>
+      <a class="btn btn-ghost" href="https://steamcommunity.com/groups/D1LDONS_TEAM" target="_blank" rel="noopener">Группа Steam</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    © 2026 D1LDONS TEAM. Все права защищены. · Дизайн и разработка: <strong>Hell7staf &amp; Ot4Um</strong>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var targets = document.querySelectorAll('.reveal, .reveal-group');
+    if(!('IntersectionObserver' in window) || !targets.length){
+      targets.forEach(function(el){ el.classList.add('is-visible'); });
+      return;
+    }
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    targets.forEach(function(el){ observer.observe(el); });
+  })();
+
+  (function(){
+    document.querySelectorAll('.clip-poster').forEach(function(poster){
+      var video = document.getElementById(poster.getAttribute('data-video-target'));
+      if(!video) return;
+      poster.addEventListener('click', function(){
+        poster.classList.add('hidden');
+        video.play();
+      });
+      video.addEventListener('ended', function(){
+        poster.classList.remove('hidden');
+        video.currentTime = 0;
+      });
+    });
+  })();
+
+  // ---------- Scroll progress bar ----------
+  (function(){
+    var bar = document.getElementById('scrollProgress');
+    if(!bar) return;
+    function update(){
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+      bar.style.width = pct + '%';
+    }
+    window.addEventListener('scroll', update, { passive:true });
+    window.addEventListener('resize', update);
+    update();
+  })();
+
+  // ---------- Mobile burger menu ----------
+  (function(){
+    var burger = document.getElementById('burgerBtn');
+    var navlinks = document.getElementById('navlinks');
+    if(!burger || !navlinks) return;
+
+    function closeMenu(){
+      navlinks.classList.remove('open');
+      burger.classList.remove('open');
+      burger.setAttribute('aria-expanded', 'false');
+    }
+
+    burger.addEventListener('click', function(){
+      var isOpen = navlinks.classList.toggle('open');
+      burger.classList.toggle('open', isOpen);
+      burger.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    navlinks.querySelectorAll('a').forEach(function(link){
+      link.addEventListener('click', closeMenu);
+    });
+
+    window.addEventListener('resize', function(){
+      if(window.innerWidth > 860) closeMenu();
+    });
+  })();
+
+  // ---------- Scrollspy: highlight active nav link ----------
+  (function(){
+    var navLinks = document.querySelectorAll('.navlinks a');
+    if(!navLinks.length) return;
+    var sections = [];
+    navLinks.forEach(function(link){
+      var id = link.getAttribute('href');
+      if(id && id.startsWith('#')){
+        var el = document.querySelector(id);
+        if(el) sections.push({ id:id, el:el, link:link });
+      }
+    });
+    if(!sections.length || !('IntersectionObserver' in window)) return;
+
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        var match = sections.find(function(s){ return s.el === entry.target; });
+        if(!match) return;
+        if(entry.isIntersecting){
+          navLinks.forEach(function(l){ l.classList.remove('active'); });
+          match.link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+
+    sections.forEach(function(s){ observer.observe(s.el); });
+  })();
+
+  // ---------- Countup numbers ----------
+  (function(){
+    var targets = document.querySelectorAll('.num[data-target]');
+    if(!targets.length) return;
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function animate(el){
+      var target = parseFloat(el.getAttribute('data-target'));
+      if(isNaN(target)){ return; }
+      var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+      var grouped = el.getAttribute('data-grouped') === 'true';
+      var emEl = el.querySelector('em');
+      if(reduceMotion){ return; }
+
+      var duration = 1300;
+      var start = null;
+
+      function format(val){
+        var str = val.toFixed(decimals);
+        if(grouped){
+          str = Math.round(val).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+        }
+        return str;
+      }
+
+      function frame(ts){
+        if(start === null) start = ts;
+        var p = Math.min((ts - start) / duration, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        var val = target * eased;
+        var display = format(val);
+        if(emEl){ emEl.textContent = display; }
+        else { el.textContent = display; }
+        if(p < 1){ requestAnimationFrame(frame); }
+        else {
+          var finalDisplay = format(target);
+          if(emEl){ emEl.textContent = finalDisplay; } else { el.textContent = finalDisplay; }
+        }
+      }
+      requestAnimationFrame(frame);
+    }
+
+    if(!('IntersectionObserver' in window)){
+      targets.forEach(animate);
+      return;
+    }
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          animate(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    targets.forEach(function(el){ observer.observe(el); });
+  })();
+
+  // ---------- Timeline active item highlight ----------
+  (function(){
+    var items = document.querySelectorAll('.tl-item');
+    if(!items.length || !('IntersectionObserver' in window)) return;
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        entry.target.classList.toggle('active', entry.isIntersecting);
+      });
+    }, { rootMargin: '-40% 0px -40% 0px', threshold: 0 });
+    items.forEach(function(item){ observer.observe(item); });
+  })();
+</script>
+
+</body>
+</html>
