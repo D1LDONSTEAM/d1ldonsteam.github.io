@@ -230,6 +230,7 @@
 
   /* ---------- ROSTER ---------- */
   .roster-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:22px; }
+  .roster-grid .player-card:last-child:nth-child(4n+1){ grid-column: 2 / 4; }
   .player-card{
     background:var(--surface); border:1px solid var(--line); border-radius:4px;
     padding:26px 22px; position:relative; overflow:hidden;
