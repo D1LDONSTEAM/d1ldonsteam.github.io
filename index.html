@@ -188,8 +188,9 @@
     background:var(--surface); overflow:hidden; white-space:nowrap;
   }
   .ticker-track{
-    display:inline-flex; gap:60px; padding:16px 0;
+    display:inline-flex; gap:52px; padding:16px 0;
     animation:scroll 26s linear infinite;
+    min-width:max-content;
   }
   .ticker-outer:hover .ticker-track{ animation-play-state:paused; }
   @keyframes scroll{ from{ transform:translateX(0);} to{ transform:translateX(-50%);} }
@@ -201,6 +202,44 @@
   /* ---------- SECTION HEADS ---------- */
   .head{ margin-bottom:52px; }
   .head h2{ font-size:clamp(40px,6vw,64px); margin-top:6px; }
+
+  /* ---------- ABOUT / RESULTS / SUPPORT ---------- */
+  .about-grid{
+    display:grid; grid-template-columns:1.4fr .9fr; gap:28px; align-items:stretch;
+  }
+  .about-panel, .about-card, .result-card, .support-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:4px;
+    overflow:hidden;
+  }
+  .about-panel{ padding:26px 26px 18px; }
+  .about-panel p{
+    color:var(--muted); font-size:17px; line-height:1.7; margin-top:18px;
+  }
+  .about-list{
+    display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:14px; margin-top:22px;
+  }
+  .about-list li{
+    list-style:none; padding:12px 14px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:3px; color:var(--text); font-size:14px; font-weight:700; letter-spacing:.04em; text-transform:uppercase;
+  }
+  .about-card{ padding:22px 20px; }
+  .about-card .mini-label{ font-size:12px; color:var(--pink); font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+  .about-card h3{ font-size:54px; line-height:1; margin-top:12px; }
+  .about-card p{ color:var(--muted); margin-top:8px; font-size:15px; }
+  .results-grid{
+    display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:20px;
+  }
+  .result-card{ padding:22px 20px; }
+  .result-card .label{ font-size:12px; color:var(--muted); font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+  .result-card h3{ font-size:44px; margin-top:10px; }
+  .result-card p{ color:var(--muted); line-height:1.6; margin-top:8px; }
+  .support-grid{
+    display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:20px;
+  }
+  .support-card{ padding:24px 20px; }
+  .support-card h3{ font-size:34px; margin-top:8px; }
+  .support-card p{ color:var(--muted); margin-top:10px; line-height:1.6; }
+  .support-card .meta{ display:inline-block; margin-top:16px; color:var(--cyan); font-weight:700; letter-spacing:.08em; text-transform:uppercase; font-size:12px; }
 
   /* ---------- STATS ---------- */
   .stat-grid{
@@ -415,31 +454,91 @@
   footer strong{ color:var(--text); }
 
   @media (max-width: 860px){
+    .wrap{ padding:0 18px; }
     .navlinks{
       position:fixed; top:63px; left:0; right:0; z-index:99;
-      flex-direction:column; gap:0; padding:8px 24px 18px;
-      background:rgba(8,8,11,.97); backdrop-filter:blur(10px);
+      flex-direction:column; gap:0; padding:0 18px;
+      background:rgba(8,8,11,.98); backdrop-filter:blur(10px);
+      border-top:1px solid var(--line);
       border-bottom:1px solid var(--line);
-      max-height:0; overflow:hidden; transition:max-height .3s ease;
+      max-height:0; overflow:hidden; opacity:0; visibility:hidden;
+      transform:translateY(-8px);
+      transition:max-height .28s ease, opacity .2s ease, visibility .2s ease, transform .2s ease;
+      box-shadow:0 16px 28px rgba(0,0,0,.2);
     }
-    .navlinks.open{ max-height:340px; }
-    .navlinks a{ padding:14px 0; border-bottom:1px solid var(--line); font-size:18px; }
+    .navlinks.open{
+      max-height:420px; opacity:1; visibility:visible; transform:translateY(0);
+    }
+    .navlinks a{
+      padding:16px 0; border-bottom:1px solid rgba(255,255,255,.05); font-size:20px;
+      font-family:'Teko',sans-serif; letter-spacing:.06em; text-transform:uppercase;
+    }
     .navlinks a:last-child{ border-bottom:none; }
+    .navlinks a::after{ display:none; }
+    .navlinks a.active{ color:var(--pink); }
     .burger{ display:flex; }
+    .hero{ padding-top:140px; }
     .hero-grid{ grid-template-columns:1fr; }
     .hero-logo{ order:-1; width:200px; }
+    .hero .sub{ font-size:18px; }
+    .cta-row{ flex-direction:column; align-items:stretch; }
+    .btn{ justify-content:center; width:100%; }
+    .about-grid{ grid-template-columns:1fr; }
+    .about-panel p{ font-size:16px; }
+    .about-list{ grid-template-columns:1fr 1fr; }
     .stat-grid{ grid-template-columns:repeat(2,1fr); }
     .tl-item{ flex-direction:column; gap:10px; padding:22px 20px; }
     .roster-grid{ grid-template-columns:1fr 1fr; }
     .roster-grid .player-card:last-child:nth-child(4n+1){ grid-column: auto; }
     .roster-grid .player-card:last-child:nth-child(2n+1){ grid-column: 1 / -1; max-width:calc(50% - 11px); margin:0 auto; }
     .clip-grid{ grid-template-columns:1fr; }
+    .ticker-track{ gap:28px; }
+    .tick-item{ font-size:13px; }
     section{ padding:70px 0; }
   }
-  @media (max-width: 480px){
+  @media (max-width: 540px){
+    nav.wrap{ padding-top:12px; padding-bottom:12px; }
+    .brand span{ font-size:22px; }
+    .brand img{ height:30px; width:30px; }
+    .hero{ padding-top:120px; padding-bottom:40px; }
+    .hero h1{ font-size:clamp(42px, 17vw, 60px); }
+    .hero .sub{ font-size:16px; }
+    .eyebrow{ letter-spacing:.14em; }
+    .head{ margin-bottom:28px; }
+    .head h2{ font-size:clamp(32px, 10vw, 54px); }
+    .about-panel, .about-card{ padding:18px 16px; }
+    .about-grid{ gap:16px; }
+    .about-list{ grid-template-columns:1fr; }
+    .about-list li{ padding:10px 12px; font-size:13px; }
+    .about-card h3{ font-size:42px; }
+    .results-grid, .support-grid{ grid-template-columns:1fr; }
+    .stat-grid{ grid-template-columns:1fr; }
+    .stat-card{ padding:22px 18px; }
+    .stat-card .num{ font-size:44px; }
+    .timeline{ border-radius:0; }
+    .tl-item{ padding:18px 16px; }
+    .tl-marker{ font-size:28px; }
+    .tl-content h3{ font-size:22px; }
+    .tl-content p{ font-size:14px; }
     .roster-grid{ grid-template-columns:1fr; }
     .roster-grid .player-card:last-child:nth-child(2n+1){ grid-column:auto; max-width:100%; margin:0; }
-    .eyebrow{ letter-spacing:.16em; }
+    .player-card{ padding:20px 16px; }
+    .player-card h3{ font-size:30px; }
+    .player-card p{ font-size:14px; }
+    .p-stats{ grid-template-columns:repeat(3, minmax(0,1fr)); }
+    .clip-grid{ gap:18px; }
+    .clip-info{ padding:14px 16px; display:block; }
+    .clip-info h3{ font-size:20px; margin-bottom:6px; }
+    .clip-info .tag{ font-size:11px; }
+    .online-grid{ grid-template-columns:1fr; }
+    .online-card{ padding:12px 14px; }
+    .online-nick{ font-size:18px; }
+    .social-row{ flex-direction:column; }
+    .social-row .btn{ min-height:46px; }
+    .ticker-track{ gap:18px; }
+    .tick-item{ font-size:12px; gap:8px; }
+    .tick-item .tag{ letter-spacing:.06em; }
+    footer{ font-size:12px; }
   }
 
   /* ---------- SCROLL REVEAL ---------- */
@@ -480,12 +579,13 @@
       <span>D1LDONS</span>
     </a>
     <div class="navlinks" id="navlinks">
+      <a href="#about">О команде</a>
       <a href="#stats">Статистика</a>
+      <a href="#results">Результаты</a>
       <a href="#online">Онлайн</a>
-      <a href="#road">Планы</a>
       <a href="#roster">Состав</a>
       <a href="#highlights">Моменты</a>
-      <a href="#social">Сообщество</a>
+      <a href="#support">Поддержка</a>
     </div>
     <button class="burger" id="burgerBtn" aria-label="Открыть меню" aria-expanded="false" aria-controls="navlinks">
       <span></span><span></span><span></span>
@@ -496,43 +596,57 @@
 <section class="hero" id="top">
   <div class="wrap hero-grid">
     <div class="reveal is-visible">
-      <span class="eyebrow">Counter-Strike 2 Official Roster</span>
+      <span class="eyebrow">Counter-Strike 2 roster</span>
       <h1>D1LDONS<br>TEAM</h1>
-      <p class="sub">Тактика, точность и командная химия. Следите за составом, статистикой и лучшими моментами с карт.</p>
+      <p class="sub">Командная дисциплина, контроль карт и уверенная игра в ключевых раундах. Сайт команды D1LDONS — новости, состав, статистика и результаты сезона.</p>
       <div class="cta-row">
-        <a class="btn btn-primary" href="#road">Наши планы</a>
-        <a class="btn btn-ghost" href="#roster">Смотреть состав</a>
+        <a class="btn btn-primary" href="#results">Результаты сезона</a>
+        <a class="btn btn-ghost" href="#roster">Состав команды</a>
       </div>
     </div>
     <div class="hero-logo reveal is-visible" id="heroLogo"><img src="image.png" alt="D1LDONS TEAM logo"></div>
   </div>
 </section>
 
-<!--
-  Эта строка статична и не привязана к расписанию — правьте только когда
-  меняются сами факты (роль игрока, вехи, статистика сезона), а не еженедельно.
--->
 <div class="ticker-outer" aria-label="Ключевые факты о команде">
   <div class="ticker-track">
-    <span class="tick-item"><span class="tag">LURKER</span> WELCOME nekiassa</span>
-    <span class="tick-item"><span class="tag">AWP</span> Kiporiss оставляет последнюю надежду на победу</span>
-    <span class="tick-item"><span class="tag">IGL</span> Ot4Um предлагает сыграть "Дэфолт"</span>
-    <span class="tick-item"><span class="tag">RIFLER</span> Hell7Staf когда</span>
-    <span class="tick-item"><span class="tag">🪵</span> </span>
-    <span class="tick-item"><span class="tag">STATS</span> Игроки достигли 51% win rate на всех картах</span>
-    <span class="tick-item"><span class="tag">ANCHOR</span> Toto держит оборону на мошонке</span>
-    <span class="tick-item"><span class="tag">AWP</span> Kiporiss оставляет последнюю надежду на победу</span>
-    <span class="tick-item"><span class="tag">IGL</span> Ot4Um предлагает сыграть "Дэфолт"</span>
-    <span class="tick-item"><span class="tag">СЕЗОН 4</span> Игроки достигли 51 win rate на всех картах</span>
-    <span class="tick-item"><span class="tag">ANCHOR</span> Toto держит оборону на мошонке</span>
-    <span class="tick-item"><span class="tag">🪵</span> </span>
-    <span class="tick-item"><span class="tag">RIFLER</span> Hell7Staf когда</span>
-    <span class="tick-item"><span class="tag">ANCHOR</span> Toto держит оборону на мошонке</span>
-    <span class="tick-item"><span class="tag">AWP</span> Kiporiss оставляет последнюю надежду на победу</span>
-    <span class="tick-item"><span class="tag">LURKER</span> WELCOME nekiassa</span>
+    <span class="tick-item"><span class="tag">СЕЗОН</span> CS2 Premier · Сезон 4</span>
+    <span class="tick-item"><span class="tag">СТИЛЬ</span> Структурированная игра и контроль давления</span>
+    <span class="tick-item"><span class="tag">КАРТЫ</span> Стабильный старт и контроль первых раундов</span>
+    <span class="tick-item"><span class="tag">СОСТАВ</span> Командная дисциплина и синхронная работа</span>
+    <span class="tick-item"><span class="tag">ЦЕЛЬ</span> Рост в региональных турнирах</span>
+    <span class="tick-item"><span class="tag">СЕЗОН</span> CS2 Premier · Сезон 4</span>
+    <span class="tick-item"><span class="tag">СТИЛЬ</span> Структурированная игра и контроль давления</span>
+    <span class="tick-item"><span class="tag">КАРТЫ</span> Стабильный старт и контроль первых раундов</span>
+    <span class="tick-item"><span class="tag">СОСТАВ</span> Командная дисциплина и синхронная работа</span>
+    <span class="tick-item"><span class="tag">ЦЕЛЬ</span> Рост в региональных турнирах</span>
   </div>
 </div>
 
+<section id="about">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="eyebrow">О команде</span>
+      <h2>Где мы растём</h2>
+    </div>
+    <div class="about-grid reveal-group">
+      <div class="about-panel reveal-item">
+        <p>D1LDONS TEAM — соревновательная CS2 команда, созданная вокруг дисциплины, стабильной коммуникации и контроля ключевых раундов. Мы строим игру вокруг общей структуры, давления на ранних этапах карты и уверенной работы в закрытых позициях.</p>
+        <ul class="about-list">
+          <li>Игровой стиль</li>
+          <li>Командная химия</li>
+          <li>Контроль карт</li>
+          <li>Работа в клинче</li>
+        </ul>
+      </div>
+      <div class="about-card reveal-item">
+        <div class="mini-label">Основная цель</div>
+        <h3>2026</h3>
+        <p>Повысить уровень стабильности, закрепиться в региональных турнирах и увеличить присутствие команды в esports-среде.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section id="stats">
   <div class="wrap">
@@ -590,32 +704,58 @@
   </div>
 </section>
 
+<section id="results">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="eyebrow">Результаты</span>
+      <h2>Сезон в цифрах</h2>
+    </div>
+    <div class="results-grid reveal-group">
+      <div class="result-card reveal-item">
+        <div class="label">CS2 Premier</div>
+        <h3>51%</h3>
+        <p>Средний win rate в сезоне при стабильной игре на нескольких картах.</p>
+      </div>
+      <div class="result-card reveal-item">
+        <div class="label">Региональные турниры</div>
+        <h3>3</h3>
+        <p>Плановые участия в отборочных и открытых локальных соревнованиях.</p>
+      </div>
+      <div class="result-card reveal-item">
+        <div class="label">Командная работа</div>
+        <h3>100%</h3>
+        <p>Фокус на синхронизации пятёрки, роли и принятии решений в ключевых раундах.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="road">
   <div class="wrap">
     <div class="head reveal">
-      <span class="eyebrow">Наши планы</span>
-      <h2>Планы команды</h2>
+      <span class="eyebrow">Планы команды</span>
+      <h2>Основные цели</h2>
     </div>
     <div class="timeline reveal-group">
       <div class="tl-item reveal-item">
         <div class="tl-marker">01</div>
         <div class="tl-content">
-          <h3>Выйти на LAN турниры</h3>
-          <p>Начать регулярно участвовать в открытых, региональных отборочных турнирах.</p>
+          <h3>Усилить стабильность в ранних раундах</h3>
+          <p>Сокращать колебания в старте карты и переводить больше матчей в привычный темп игры команды.</p>
         </div>
       </div>
       <div class="tl-item reveal-item">
         <div class="tl-marker">02</div>
         <div class="tl-content">
-          <h3>Поднять средний рейтинг состава</h3>
-          <p>Стабилизировать игру всей пятёркой и повысить средний win rate в CS2 Premier.</p>
+          <h3>Поднять эффективность в турнирах</h3>
+          <p>Стабилизировать результаты в соревновательной среде и повышать качество закрытия ключевых серий.</p>
         </div>
       </div>
       <div class="tl-item reveal-item">
         <div class="tl-marker">03</div>
         <div class="tl-content">
-          <h3>Расширить сообщество</h3>
-          <p>Развивать Telegram-канал и Steam-группу, привлекать зрителей и потенциальных партнёров.</p>
+          <h3>Расширить сообщество и партнёрства</h3>
+          <p>Развивать Telegram, Steam-группу и взаимодействие с сообществом, спонсорами и партнёрами.</p>
         </div>
       </div>
     </div>
@@ -774,14 +914,30 @@
   </div>
 </section>
 
-<section id="social" class="community">
+<section id="support" class="community">
   <div class="wrap reveal">
-    <span class="eyebrow">Будьте на связи</span>
-    <h2>Сообщество команды</h2>
-    <p>Новости, анонсы матчей и закулисье — в наших соцсетях.</p>
-    <div class="social-row">
-      <a class="btn btn-primary" href="https://t.me/DLST_Esport" target="_blank" rel="noopener">Telegram канал</a>
-      <a class="btn btn-ghost" href="https://steamcommunity.com/groups/D1LDONS_TEAM" target="_blank" rel="noopener">Группа Steam</a>
+    <span class="eyebrow">Поддержка</span>
+    <h2>Поддержите D1LDONS TEAM</h2>
+    <p>Мы развиваем команду, растим сообщество и строим боевой бренд вокруг дисциплины, качества игры и стабильной работы в турнирах.</p>
+    <div class="support-grid reveal-group">
+      <div class="support-card reveal-item">
+        <div class="eyebrow" style="letter-spacing:.08em;">Партнёрство</div>
+        <h3>Стать спонсором</h3>
+        <p>Поддержка команды и участие в развитии esports-бренда через события, медиа и продвижение.</p>
+        <a class="meta" href="https://t.me/boost/DLST_Esport" target="_blank" rel="noopener">Contact</a>
+      </div>
+      <div class="support-card reveal-item">
+        <div class="eyebrow" style="letter-spacing:.08em;">Сообщество</div>
+        <h3>Следить за новостями</h3>
+        <p>Свежие анонсы, матчи, новости состава и результаты — в Telegram и Steam-группе команды.</p>
+        <a class="meta" href="https://t.me/DLST_Esport" target="_blank" rel="noopener">Official channels</a>
+      </div>
+      <div class="support-card reveal-item">
+        <div class="eyebrow" style="letter-spacing:.08em;">Мерч</div>
+        <h3>Поддержать команду</h3>
+        <p>Поддержка клуба помогает развивать команду, инфраструктуру и участие в турнирах.</p>
+        <a class="meta" href="https://d1ldonsteam.github.io/DST-CASINO/" target="_blank" rel="noopener">Support us</a>
+      </div>
     </div>
   </div>
 </section>
