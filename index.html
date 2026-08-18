@@ -251,7 +251,7 @@
     border-radius:7px;
   }
   .player-card .id{ font-size:13px; color:var(--muted); font-weight:700; letter-spacing:.1em; }
-  .player-card h3{ font-size:38px; margin-top:6px; }
+  .player-card h3{ font-size:38px; margin-top:6px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .player-card .role{ color:var(--cyan); font-weight:700; font-size:14px; letter-spacing:.06em; text-transform:uppercase; margin-top:2px; }
   .player-card p{ margin-top:14px; color:var(--muted); font-size:15px; line-height:1.5; }
   .player-card .steam{
@@ -275,10 +275,11 @@
   .lvl-pill{
     display:inline-flex; align-items:center; gap:6px; margin-top:14px;
     font-size:13px; font-weight:700; color:var(--muted);
+    white-space:nowrap; flex-wrap:nowrap;
   }
   .lvl-pill .rating{
     font-family:'Teko',sans-serif; font-size:19px; letter-spacing:.02em;
-    color:var(--pink); font-weight:600;
+    color:var(--pink); font-weight:600; white-space:nowrap;
   }
   .roster-grid .vacant{ grid-column:1 / -1; }
   .player-card.vacant{
@@ -430,11 +431,14 @@
     .stat-grid{ grid-template-columns:repeat(2,1fr); }
     .tl-item{ flex-direction:column; gap:10px; padding:22px 20px; }
     .roster-grid{ grid-template-columns:1fr 1fr; }
+    .roster-grid .player-card:last-child:nth-child(4n+1){ grid-column: auto; }
+    .roster-grid .player-card:last-child:nth-child(2n+1){ grid-column: 1 / -1; max-width:calc(50% - 11px); margin:0 auto; }
     .clip-grid{ grid-template-columns:1fr; }
     section{ padding:70px 0; }
   }
   @media (max-width: 480px){
     .roster-grid{ grid-template-columns:1fr; }
+    .roster-grid .player-card:last-child:nth-child(2n+1){ grid-column:auto; max-width:100%; margin:0; }
     .eyebrow{ letter-spacing:.16em; }
   }
 
@@ -725,7 +729,7 @@
         <h3>nekiassa</h3>
         <div class="role">Lurker</div>
         <p>Тихий охотник. Читает карту, режет связи и создаёт хаос в тылу.</p>
-        <span class="lvl-pill">FACEIT S8 · <span class="rating">Нет ранга</span></span>
+        <span class="lvl-pill">FACEIT S9 · <span class="rating">Нет ранга</span></span>
         <div class="p-stats">
           <div class="p-stat"><div class="v">37.5%</div><div class="l">Win rate</div></div>
           <div class="p-stat"><div class="v">0.98</div><div class="l">K/D</div></div>
