@@ -332,6 +332,7 @@
     document.addEventListener('keydown', function (e) {
       if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
       if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+      if (document.body.classList.contains('no-scroll')) return; // открыт просмотр клипа
       var t = e.target;
       if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT|VIDEO|AUDIO)$/.test(t.tagName))) return;
       goTo(active + (e.key === 'ArrowRight' ? 1 : -1));
@@ -507,7 +508,7 @@
     if (!bar) return;
     function update() {
       var h = document.documentElement.scrollHeight - window.innerHeight;
-      bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+      bar.style.transform = 'scaleX(' + (h > 0 ? Math.min(1, window.scrollY / h) : 0).toFixed(4) + ')';
     }
     window.addEventListener('scroll', update, { passive: true });
     window.addEventListener('resize', update);
@@ -602,9 +603,197 @@
     items.forEach(function (i) { io.observe(i); });
   }
 
+  // Галерея: автопревью по наведению + просмотр в окне (клипы и скрины)
+  function initGallery() {
+    var items = Array.prototype.slice.call(document.querySelectorAll('.gal-item'));
+    if (!items.length) return;
+
+    var lite = document.documentElement.classList.contains('lite');
+    var saveData = !!(navigator.connection && navigator.connection.saveData);
+    var canHover = !!(window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches);
+
+    /* ----- автопревью ----- */
+    function startPreview(it) {
+      if (saveData || it.getAttribute('data-type') !== 'video') return;
+      var v = it.querySelector('.gal-preview');
+      if (!v) return;
+      var short = it.getAttribute('data-preview'); // короткий легкий ролик (позже)
+      // на телефонах и слабых устройствах полный клип для превью не грузим
+      if (lite && !short) return;
+      if (short && v.getAttribute('src') !== short) v.setAttribute('src', short);
+      var p = v.play();
+      if (p && p.catch) p.catch(function () {});
+      it.classList.add('is-previewing');
+    }
+    function stopPreview(it) {
+      var v = it.querySelector('.gal-preview');
+      if (v) {
+        v.pause();
+        try { v.currentTime = 0; } catch (e) {}
+      }
+      it.classList.remove('is-previewing');
+    }
+
+    if (canHover) {
+      items.forEach(function (it) {
+        it.addEventListener('pointerenter', function () { startPreview(it); });
+        it.addEventListener('pointerleave', function () { stopPreview(it); });
+        it.addEventListener('focus', function () { startPreview(it); });
+        it.addEventListener('blur', function () { stopPreview(it); });
+      });
+    } else if ('IntersectionObserver' in window) {
+      // тач-устройства: превью крутится, пока плитка в центре экрана (только для data-preview)
+      var pio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) startPreview(en.target); else stopPreview(en.target);
+        });
+      }, { threshold: 0.65 });
+      items.forEach(function (it) { if (it.getAttribute('data-preview')) pio.observe(it); });
+    }
+
+    /* ----- просмотр ----- */
+    var lb = null, lbVideo, lbImg, lbTitle, lbMeta, lbPrev, lbNext, lbClose;
+    var current = -1, lastFocus = null;
+
+    function mkBtn(label, aria) {
+      var b = el('button', null, label);
+      b.type = 'button';
+      b.setAttribute('aria-label', aria);
+      return b;
+    }
+
+    function buildLightbox() {
+      lb = el('div', 'lightbox');
+      lb.hidden = true;
+      lb.setAttribute('role', 'dialog');
+      lb.setAttribute('aria-modal', 'true');
+      lb.setAttribute('aria-label', 'Просмотр');
+
+      var inner = el('div', 'lb-inner');
+      var st = el('div', 'lb-stage');
+      lbVideo = document.createElement('video');
+      lbVideo.controls = true;
+      lbVideo.playsInline = true;
+      lbVideo.preload = 'none';
+      lbVideo.hidden = true;
+      lbImg = new Image();
+      lbImg.alt = '';
+      lbImg.decoding = 'async';
+      lbImg.hidden = true;
+      st.appendChild(lbVideo);
+      st.appendChild(lbImg);
+
+      var cap = el('div', 'lb-cap');
+      var txt = el('div');
+      lbTitle = el('b', 'lb-title');
+      lbMeta = el('span', 'lb-meta');
+      txt.appendChild(lbTitle);
+      txt.appendChild(lbMeta);
+
+      var btns = el('div', 'lb-btns');
+      lbPrev = mkBtn('←', 'Предыдущий');
+      lbNext = mkBtn('→', 'Следующий');
+      lbClose = mkBtn('Закрыть ✕', 'Закрыть');
+      if (items.length < 2) { lbPrev.hidden = true; lbNext.hidden = true; }
+      btns.appendChild(lbPrev);
+      btns.appendChild(lbNext);
+      btns.appendChild(lbClose);
+
+      cap.appendChild(txt);
+      cap.appendChild(btns);
+      inner.appendChild(st);
+      inner.appendChild(cap);
+      lb.appendChild(inner);
+      document.body.appendChild(lb);
+
+      lbPrev.addEventListener('click', function () { openAt(current - 1); });
+      lbNext.addEventListener('click', function () { openAt(current + 1); });
+      lbClose.addEventListener('click', closeLb);
+      lb.addEventListener('click', function (e) { if (e.target === lb) closeLb(); });
+    }
+
+    function openAt(i) {
+      if (!lb) buildLightbox();
+      var n = items.length;
+      current = ((i % n) + n) % n;
+      var it = items[current];
+      var type = it.getAttribute('data-type') || 'video';
+      var src = it.getAttribute('data-src');
+      if (!src) return;
+
+      items.forEach(stopPreview);
+      lbTitle.textContent = it.getAttribute('data-title') || '';
+      lbMeta.textContent = it.getAttribute('data-meta') || '';
+
+      if (type === 'image') {
+        lbVideo.pause();
+        lbVideo.removeAttribute('src');
+        lbVideo.hidden = true;
+        lbImg.src = src;
+        lbImg.hidden = false;
+      } else {
+        lbImg.hidden = true;
+        lbImg.removeAttribute('src');
+        lbVideo.hidden = false;
+        var poster = it.getAttribute('data-poster');
+        if (poster) lbVideo.setAttribute('poster', poster); else lbVideo.removeAttribute('poster');
+        lbVideo.src = src;
+        var pr = lbVideo.play();
+        if (pr && pr.catch) pr.catch(function () {});
+      }
+
+      if (lb.hidden) {
+        lastFocus = document.activeElement;
+        lb.hidden = false;
+        document.body.classList.add('no-scroll');
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () { lb.classList.add('open'); });
+        });
+        lbClose.focus();
+      }
+    }
+
+    function closeLb() {
+      if (!lb || lb.hidden) return;
+      lb.classList.remove('open');
+      lbVideo.pause();
+      lbVideo.removeAttribute('src');
+      lbVideo.load();          // освободить буфер и остановить загрузку
+      lbImg.removeAttribute('src');
+      document.body.classList.remove('no-scroll');
+      setTimeout(function () { if (!lb.classList.contains('open')) lb.hidden = true; }, 300);
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    items.forEach(function (it, i) {
+      it.addEventListener('click', function () { openAt(i); });
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (!lb || lb.hidden) return;
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeLb();
+      } else if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && items.length > 1) {
+        if (e.target && e.target.tagName === 'VIDEO') return; // перемотка видео
+        e.preventDefault();
+        openAt(current + (e.key === 'ArrowRight' ? 1 : -1));
+      } else if (e.key === 'Tab') {
+        var f = [];
+        if (!lbVideo.hidden) f.push(lbVideo);
+        [lbPrev, lbNext, lbClose].forEach(function (b) { if (!b.hidden) f.push(b); });
+        var first = f[0], last = f[f.length - 1];
+        if (!lb.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+        else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+  }
+
   initCarousel();
   initReveal();
   initPosters();
+  initGallery();
   initProgress();
   initBurger();
   initScrollspy();

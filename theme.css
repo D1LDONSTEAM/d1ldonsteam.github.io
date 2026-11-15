@@ -133,6 +133,93 @@ h1,h2,h3{ font-family:var(--display); font-weight:700; letter-spacing:0; line-he
 
 footer strong{ color:var(--fg); }
 
+/* ---------- Галерея (клипы и скрины, автопревью по наведению) ---------- */
+.gal-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap:20px; }
+.gal-item{
+  position:relative; display:block; width:100%; aspect-ratio:16/9; padding:0; overflow:hidden;
+  background:#050507; border:1px solid var(--line); color:var(--fg); text-align:left; cursor:pointer;
+  transition:border-color .5s var(--ease), transform .6s var(--ease);
+}
+.gal-item:hover, .gal-item:focus-visible{ border-color:var(--line-strong); transform:translateY(-3px); }
+.gal-thumb, .gal-preview{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  filter:grayscale(100%) contrast(125%) brightness(.62);
+  transition:filter .6s var(--ease), transform .8s var(--ease), opacity .4s var(--ease);
+}
+.gal-preview{ opacity:0; pointer-events:none; }
+.gal-item.is-previewing .gal-preview{ opacity:1; }
+.gal-item:hover .gal-thumb, .gal-item:hover .gal-preview{ filter:grayscale(100%) contrast(125%) brightness(.85); transform:scale(1.04); }
+.gal-item::after{
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(to top, rgba(0,0,0,.88), transparent 58%);
+}
+.gal-badge{
+  position:absolute; left:14px; top:14px; z-index:2; padding:3px 8px;
+  font-family:var(--mono); font-size:10.5px; font-weight:700; letter-spacing:.16em;
+  border:1px solid var(--line-strong); background:rgba(0,0,0,.45);
+}
+.gal-icon{
+  position:absolute; right:14px; top:14px; z-index:2; width:42px; height:42px; border-radius:50%;
+  border:1px solid var(--fg); background:rgba(0,0,0,.35);
+  display:flex; align-items:center; justify-content:center;
+  transition:background .4s var(--ease);
+}
+.gal-icon svg{ width:14px; height:14px; margin-left:2px; fill:var(--fg); transition:fill .4s var(--ease); }
+.gal-item:hover .gal-icon{ background:var(--fg); }
+.gal-item:hover .gal-icon svg{ fill:var(--bg); }
+.gal-item[data-type="image"] .gal-icon{ display:none; }
+.gal-cap{ position:absolute; left:0; right:0; bottom:0; z-index:2; padding:16px 18px 18px; display:flex; flex-direction:column; gap:4px; }
+.gal-moment{ font-family:var(--display); font-weight:700; font-size:clamp(26px,3vw,34px); line-height:1; text-transform:uppercase; }
+.gal-name{ font-family:var(--mono); font-size:12px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--cool); }
+.gal-meta{ font-family:var(--mono); font-size:11px; letter-spacing:.08em; color:var(--soft); }
+.gal-bar{ position:absolute; left:0; bottom:0; height:2px; width:100%; z-index:3; background:var(--fg); transform:scaleX(0); transform-origin:0 50%; }
+.gal-item.is-previewing .gal-bar{ animation:galbar 6s linear infinite; }
+@keyframes galbar{ from{ transform:scaleX(0); } to{ transform:scaleX(1); } }
+
+/* просмотр клипа/скрина */
+.lightbox{
+  position:fixed; inset:0; z-index:400; display:flex; align-items:center; justify-content:center;
+  padding:18px; background:rgba(0,0,0,.94); opacity:0; transition:opacity .3s var(--ease);
+}
+.lightbox[hidden]{ display:none; }
+.lightbox.open{ opacity:1; }
+.lb-inner{ width:min(1080px, 100%); }
+.lb-stage video, .lb-stage img{ display:block; width:100%; max-height:76vh; object-fit:contain; background:#000; border:1px solid var(--line); }
+.lb-stage [hidden]{ display:none; }
+.lb-cap{ display:flex; justify-content:space-between; align-items:center; gap:14px; margin-top:12px; flex-wrap:wrap; }
+.lb-title{ display:block; font-family:var(--display); font-size:22px; font-weight:700; text-transform:uppercase; line-height:1.1; }
+.lb-meta{ display:block; margin-top:4px; font-family:var(--mono); font-size:11px; letter-spacing:.08em; color:var(--soft); }
+.lb-btns{ display:flex; gap:8px; }
+.lb-btns button{
+  padding:10px 16px; border:1px solid var(--line-strong);
+  font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+  transition:background .4s var(--ease), color .4s var(--ease);
+}
+.lb-btns button:hover{ background:var(--fg); color:var(--bg); }
+.lb-btns button[hidden]{ display:none; }
+body.no-scroll{ overflow:hidden; }
+
+/* полоса прокрутки: трансформация вместо width (без перерасчёта макета) */
+.scroll-progress{ width:100%; transform:scaleX(0); transform-origin:0 50%; will-change:transform; }
+
+/* ---------- Облегчённый режим (класс .lite: телефоны и слабые устройства) ---------- */
+.lite body::after{ display:none; }                         /* зерно на весь экран — дорого */
+.lite header{ background:rgba(0,0,0,.88); -webkit-backdrop-filter:none; backdrop-filter:none; }
+.lite .panel, .lite .result-card, .lite .support-card, .lite .stat-card, .lite .tl-item{
+  background:rgba(4,4,6,.82); -webkit-backdrop-filter:none; backdrop-filter:none;
+}
+.lite .pcard{
+  background:rgba(4,4,6,.9); -webkit-backdrop-filter:none; backdrop-filter:none;
+  filter:none; will-change:auto; opacity:calc(1 - var(--ad) * .45);
+}
+.lite .pcard.is-far{ opacity:0; }
+.lite .bg-blur i{ animation:none; will-change:auto; }
+.lite .bg-blur i:nth-child(3){ display:none; }
+.lite .sky-clouds{ animation:none; }
+.lite .ticker-track{ animation-duration:50s; }
+.lite .lightbox{ background:#000; }
+.lite *{ -webkit-tap-highlight-color:transparent; }
+
 /* ---------- Адаптив ---------- */
 @media (max-width:860px){
   .nav-pill{ display:none; }

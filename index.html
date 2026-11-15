@@ -6,7 +6,16 @@
 <title>D1LDONS TEAM | CS2</title>
 <meta name="theme-color" content="#000000">
 <link rel="icon" href="image.png">
-<script>document.documentElement.className += ' js';</script>
+<script>
+(function () {
+  var d = document.documentElement, n = navigator, c = n.connection || {};
+  d.className += ' js';
+  // «Облегчённый» режим: телефоны, сенсорные экраны, слабые устройства, экономия трафика
+  var lite = (window.matchMedia && matchMedia('(pointer:coarse)').matches) || window.innerWidth <= 860 ||
+    (n.deviceMemory && n.deviceMemory <= 4) || (n.hardwareConcurrency && n.hardwareConcurrency <= 4) || c.saveData;
+  if (lite) d.className += ' lite';
+})();
+</script>
 
 <!-- SEO -->
 <meta name="google-site-verification" content="IWuz9sOUUEmOnU_aYL1xTTpv0neCDigroC9-tilS-Aw">
@@ -30,7 +39,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="theme.css">
 </head>
@@ -57,7 +66,7 @@
       <a href="#stats">Статистика</a>
       <a href="#results">Результаты</a>
       <a href="#roster">Состав</a>
-      <a href="#highlights">Моменты</a>
+      <a href="#gallery">Галерея</a>
       <a href="#support">Поддержка</a>
     </div>
     <a class="nav-pill" href="https://t.me/DLST_Esport" target="_blank" rel="noopener">Contact</a>
@@ -272,40 +281,53 @@
   </div>
 </section>
 
-<section id="highlights">
+<section id="gallery">
+  <span id="highlights" aria-hidden="true"></span>
   <div class="wrap">
     <div class="head reveal">
-      <span class="eyebrow">07 / Broadcast reel</span>
-      <h2>Моменты</h2>
-      <p class="subtitle">Лучшие моменты</p>
+      <span class="eyebrow">07 / Галерея</span>
+      <h2>Галерея</h2>
+      <p class="subtitle">Лучшие моменты, клипы и скрины команды</p>
     </div>
-    <div class="clip-grid reveal-group">
-      <div class="clip reveal-item">
-        <div class="clip-poster" data-video-target="clip-video-1">
-          <img class="poster-img" src="clip1-poster.jpg" alt="" loading="lazy">
-          <span class="moment-tag">Triple Kill</span>
-          <span class="player-name">От4Им</span>
-          <span class="play-ring"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
-        </div>
-        <video id="clip-video-1" src="video_1.mp4" controls preload="metadata"></video>
-        <div class="clip-info">
-          <h3>От4Им: AWP Triple kill</h3>
-          <span class="tag-info">Inferno · 2026</span>
-        </div>
+
+    <!--
+      Как добавить скриншот: скопируйте блок <div class="reveal-item">…</div> ниже, поставьте
+      data-type="image", в data-src укажите файл, в <img class="gal-thumb"> — тот же файл
+      (тег <video class="gal-preview"> для картинки удалите). Клип: data-type="video", data-src="файл.mp4",
+      data-poster="постер.jpg".
+    -->
+    <div class="gal-grid reveal-group">
+
+      <div class="reveal-item">
+        <button class="gal-item" type="button" data-type="video" data-src="video_1.mp4" data-poster="clip1-poster.jpg" data-title="От4Им: AWP Triple kill" data-meta="Inferno · 2026" aria-label="Открыть клип: От4Им, AWP Triple kill">
+          <img class="gal-thumb" src="clip1-poster.jpg" alt="" loading="lazy">
+          <video class="gal-preview" src="video_1.mp4" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
+          <span class="gal-badge">CLIP</span>
+          <span class="gal-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+          <span class="gal-cap">
+            <b class="gal-moment">Triple Kill</b>
+            <span class="gal-name">От4Им</span>
+            <span class="gal-meta">Inferno · 2026</span>
+          </span>
+          <i class="gal-bar"></i>
+        </button>
       </div>
-      <div class="clip reveal-item">
-        <div class="clip-poster" data-video-target="clip-video-2">
-          <img class="poster-img" src="clip2-poster.jpg" alt="" loading="lazy">
-          <span class="moment-tag">Quadro Kill</span>
-          <span class="player-name">Kiporiss</span>
-          <span class="play-ring"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
-        </div>
-        <video id="clip-video-2" src="video_2.mp4" controls preload="metadata"></video>
-        <div class="clip-info">
-          <h3>Kiporiss: Quadro kill</h3>
-          <span class="tag-info">Dust II · 2026</span>
-        </div>
+
+      <div class="reveal-item">
+        <button class="gal-item" type="button" data-type="video" data-src="video_2.mp4" data-poster="clip2-poster.jpg" data-title="Kiporiss: Quadro kill" data-meta="Dust II · 2026" aria-label="Открыть клип: Kiporiss, Quadro kill">
+          <img class="gal-thumb" src="clip2-poster.jpg" alt="" loading="lazy">
+          <video class="gal-preview" src="video_2.mp4" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
+          <span class="gal-badge">CLIP</span>
+          <span class="gal-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+          <span class="gal-cap">
+            <b class="gal-moment">Quadro Kill</b>
+            <span class="gal-name">Kiporiss</span>
+            <span class="gal-meta">Dust II · 2026</span>
+          </span>
+          <i class="gal-bar"></i>
+        </button>
       </div>
+
     </div>
   </div>
 </section>
@@ -362,7 +384,7 @@
 <script>
 /* Размытый фон появляется плавно по мере прокрутки первого экрана */
 (function () {
-  var root = document.documentElement, ticking = false;
+  var root = document.querySelector('.bg-blur') || document.documentElement, ticking = false;
   function update() {
     ticking = false;
     var s = Math.min(1, Math.max(0, window.scrollY / (window.innerHeight * 0.9)));

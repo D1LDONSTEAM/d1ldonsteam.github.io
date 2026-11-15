@@ -17,6 +17,8 @@
   if (!sky) return;
 
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // облегчённый режим (телефоны/слабые устройства) — класс ставит скрипт в <head>
+  var LITE = document.documentElement.classList.contains('lite');
 
   var canvas = document.createElement('canvas');
   canvas.className = 'sky-fog';
@@ -24,7 +26,7 @@
 
   var gl = null;
   try {
-    gl = canvas.getContext('webgl', { alpha: false, antialias: false, powerPreference: 'default' }) ||
+    gl = canvas.getContext('webgl', { alpha: false, antialias: false, powerPreference: LITE ? 'low-power' : 'default' }) ||
          canvas.getContext('experimental-webgl');
   } catch (e) { gl = null; }
   if (!gl) return;
@@ -32,6 +34,7 @@
   var VERT = 'attribute vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }';
 
   var FRAG = [
+    LITE ? '#define LOW' : '',
     '#ifdef GL_FRAGMENT_PRECISION_HIGH',
     'precision highp float;',
     '#else',
@@ -80,12 +83,19 @@
     '  p += normalize(dm + 0.0001) * lens * 0.07 * uPush;',
 
     // течение с domain warp
+    '#ifdef LOW',
+    '  vec2 q = vec2(fbm(p * 1.5 + vec2(0.0, t), 3), fbm(p * 1.5 + vec2(5.2, 1.3) - t, 3));',
+    '  float f = fbm(p * 1.35 + 2.1 * q + vec2(t * 1.6, -t * 0.8), 4);',
+    '#else',
     '  vec2 q = vec2(fbm(p * 1.5 + vec2(0.0, t), 4), fbm(p * 1.5 + vec2(5.2, 1.3) - t, 4));',
     '  float f = fbm(p * 1.35 + 2.1 * q + vec2(t * 1.6, -t * 0.8), 6);',
+    '#endif',
 
     // тонкие «волокна» дыма поверх основной массы
+    '#ifndef LOW',
     '  float w = fbm(p * 3.4 + 3.0 * q + vec2(-t * 2.4, t * 1.3), 4);',
     '  f = f * 0.84 + w * 0.16;',
+    '#endif',
     '  f += lens * 0.16 * uPush;',
 
     '  float fog = smoothstep(0.30, 0.84, f);',
@@ -141,9 +151,9 @@
   sky.classList.add('has-fog');
 
   /* ---------- размеры: качество выше, чем раньше ---------- */
-  var SCALES = [0.8, 0.6, 0.45, 0.33];   // ступени качества
+  var SCALES = LITE ? [0.5, 0.4, 0.3] : [0.8, 0.6, 0.45, 0.33];   // ступени качества
   var scaleIdx = 0;
-  var MAX_PIXELS = 1300000;
+  var MAX_PIXELS = LITE ? 420000 : 1300000;
   var skyH = 1;
 
   function resize() {
@@ -166,7 +176,16 @@
     gl.viewport(0, 0, sw, sh);
     gl.uniform2f(uRes, sw, sh);
   }
-  window.addEventListener('resize', resize);
+  // дебаунс: на телефонах resize срабатывает при скрытии адресной строки — не пересоздаём буфер вхолостую
+  var rzTimer = 0, lastW = window.innerWidth;
+  window.addEventListener('resize', function () {
+    clearTimeout(rzTimer);
+    rzTimer = setTimeout(function () {
+      if (LITE && window.innerWidth === lastW) return;
+      lastW = window.innerWidth;
+      resize();
+    }, 200);
+  });
 
   /* ---------- курсор / автодвижение на тач-экранах ---------- */
   var target = { x: 0.7, y: 0.65 };
@@ -187,7 +206,7 @@
   var running = false, rafId = 0;
   var start = performance.now();
   var prev = 0;
-  var FRAME_MS = 1000 / 30;
+  var FRAME_MS = LITE ? 1000 / 24 : 1000 / 30;
   var accDt = 0, accN = 0;
 
   function adapt(dt) {
