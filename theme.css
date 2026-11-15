@@ -74,8 +74,8 @@ h1,h2,h3{ font-family:var(--display); font-weight:700; letter-spacing:0; line-he
 .eyebrow{ color:var(--cool); }
 
 .head{ margin-bottom:60px; }
-.head h2{ font-size:clamp(60px,14vw,190px); line-height:.82; letter-spacing:-.005em; margin-top:14px; }
-.subtitle{ color:var(--cool); font-weight:700; font-size:13px; letter-spacing:.06em; margin-top:22px; max-width:520px; }
+.head h2{ font-size:clamp(60px,14vw,190px); line-height:.82; letter-spacing:-.005em; margin-top:14px; padding-bottom:.16em; } /* запас под «хвосты» БДЖЦ и др., чтобы подзаголовок не наезжал */
+.subtitle{ color:var(--cool); font-weight:700; font-size:13px; letter-spacing:.06em; margin-top:6px; max-width:520px; }
 
 /* ---------- HERO ---------- */
 .hero{ min-height:100svh; display:flex; align-items:flex-end; padding-top:120px; padding-bottom:56px; }
