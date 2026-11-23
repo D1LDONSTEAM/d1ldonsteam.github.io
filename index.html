@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -40,14 +40,24 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="style.css?v=2.4">
+<link rel="stylesheet" href="theme.css?v=2.4">
+<link rel="stylesheet" href="enhancements.css?v=2.6">
+<link rel="stylesheet" href="pause.css?v=1.0">
 </head>
 <body>
 
+<!-- PAGE LOADER -->
+<div class="page-loader" id="pageLoader">
+  <div class="loader-inner">
+    <img src="image.png" alt="" class="loader-logo" width="56" height="56">
+    <div class="loader-bar"><div class="loader-fill"></div></div>
+    <div class="loader-text">Загрузка</div>
+  </div>
+</div>
+
 <div class="sky" aria-hidden="true">
-  <span class="sky-clouds"></span>
-  <span class="sky-dither"></span>
+  <canvas class="sky-plasma" id="plasmaCanvas"></canvas>
   <span class="sky-tint"></span>
 </div>
 
@@ -59,7 +69,7 @@
   <nav class="wrap">
     <a class="brand" href="#top">
       <img src="image.png" alt="D1LDONS TEAM logo">
-      <span>D1LDONS</span>
+      <span class="shiny-text">D1LDONS</span>
     </a>
     <div class="navlinks" id="navlinks">
       <a href="#about">О команде</a>
@@ -69,7 +79,10 @@
       <a href="#gallery">Галерея</a>
       <a href="#support">Поддержка</a>
     </div>
-    <a class="nav-pill" href="https://t.me/DLST_Esport" target="_blank" rel="noopener">Contact</a>
+    <div class="header-actions">
+      <button class="sfx-pill" id="sfxToggle" type="button" aria-pressed="false" title="Переключить звуковые эффекты">SFX: OFF</button>
+      <a class="nav-pill" href="https://t.me/DLST_Esport" target="_blank" rel="noopener">Contact</a>
+    </div>
     <button class="burger" id="burgerBtn" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="navlinks">
       <span></span><span></span><span></span>
     </button>
@@ -79,9 +92,10 @@
 <section class="hero" id="top">
   <div class="wrap hero-grid">
     <div class="reveal">
+      <div class="hero-badge"><span class="badge-dot"></span> <span class="shiny-text">SEASON ACTIVE · MATCH READY</span></div>
       <span class="eyebrow">Counter-Strike 2 · Roster</span>
       <h1 class="hero-title"><span class="line"><span>D1LDONS</span></span><span class="line"><span>TEAM</span></span></h1>
-      <p class="sub">Командная дисциплина, контроль карт и уверенная игра в ключевых раундах.</p>
+      <p class="sub">Любительская CS2-команда из России: пять игроков, Premier и FACEIT.</p>
       <div class="cta-row">
         <a class="btn btn-primary" href="#results">Результаты сезона</a>
         <a class="btn btn-ghost" href="#roster">Состав команды</a>
@@ -100,16 +114,14 @@
 
 <div class="ticker-outer" aria-label="Ключевые факты о команде">
   <div class="ticker-track">
-    <span class="tick-item"><span class="tag">СЕЗОН</span> CS2 Premier · Сезон 4</span>
-    <span class="tick-item"><span class="tag">СТИЛЬ</span> Структурированная игра и контроль давления</span>
-    <span class="tick-item"><span class="tag">КАРТЫ</span> Стабильный старт и контроль первых раундов</span>
-    <span class="tick-item"><span class="tag">СОСТАВ</span> Командная дисциплина и синхронная работа</span>
-    <span class="tick-item"><span class="tag">ЦЕЛЬ</span> Рост в региональных турнирах</span>
-    <span class="tick-item"><span class="tag">СЕЗОН</span> CS2 Premier · Сезон 4</span>
-    <span class="tick-item"><span class="tag">СТИЛЬ</span> Структурированная игра и контроль давления</span>
-    <span class="tick-item"><span class="tag">КАРТЫ</span> Стабильный старт и контроль первых раундов</span>
-    <span class="tick-item"><span class="tag">СОСТАВ</span> Командная дисциплина и синхронная работа</span>
-    <span class="tick-item"><span class="tag">ЦЕЛЬ</span> Рост в региональных турнирах</span>
+    <span class="tick-item"><span class="tag">PREMIER</span> Сезон 4 · 647 матчей · win rate 51% · K/D 0.98</span>
+    <span class="tick-item"><span class="tag">FACEIT</span> Сезон 8 · 87 матчей · win rate 65.5% · ADR 76.5</span>
+    <span class="tick-item"><span class="tag">СОСТАВ</span> 5 игроков</span>
+    <span class="tick-item"><span class="tag">ЦЕЛЬ</span> Региональные турниры в 2026</span>
+    <span class="tick-item"><span class="tag">PREMIER</span> Сезон 4 · 647 матчей · win rate 51% · K/D 0.98</span>
+    <span class="tick-item"><span class="tag">FACEIT</span> Сезон 8 · 87 матчей · win rate 65.5% · ADR 76.5</span>
+    <span class="tick-item"><span class="tag">СОСТАВ</span> 5 игроков</span>
+    <span class="tick-item"><span class="tag">ЦЕЛЬ</span> Региональные турниры в 2026</span>
   </div>
 </div>
 
@@ -118,11 +130,11 @@
     <div class="head reveal">
       <span class="eyebrow">01 / О команде</span>
       <h2>О команде</h2>
-      <p class="subtitle">Где мы растём</p>
+      
     </div>
     <div class="about-grid reveal-group">
       <div class="about-panel panel reveal-item">
-        <p>D1LDONS TEAM — соревновательная CS2 команда, созданная вокруг дисциплины, стабильной коммуникации и контроля ключевых раундов. Мы строим игру вокруг общей структуры, давления на ранних этапах карты и уверенной работы в закрытых позициях.</p>
+        <p>D1LDONS TEAM — любительская CS2-команда из России. Играем через давление на ранних этапах карты и работу в закрытых позициях.</p>
         <ul class="about-list">
           <li>Игровой стиль</li>
           <li>Командная химия</li>
@@ -133,7 +145,7 @@
       <div class="about-card panel reveal-item">
         <div class="mini-label">Основная цель</div>
         <h3>2026</h3>
-        <p>Повысить уровень стабильности, закрепиться в региональных турнирах и увеличить присутствие команды в esports-среде.</p>
+        <p>Не закрыться до следующего понедельника.</p>
       </div>
     </div>
   </div>
@@ -144,7 +156,7 @@
     <div class="head reveal">
       <span class="eyebrow">02 / CS2 Premier · Сезон 4</span>
       <h2>Статистика</h2>
-      <p class="subtitle">Статистика сезона</p>
+      
     </div>
     <div class="stat-grid reveal-group">
       <div class="stat-card reveal-item">
@@ -173,7 +185,7 @@
     <div class="head reveal">
       <span class="eyebrow">03 / FACEIT · Сезон 8</span>
       <h2>FACEIT</h2>
-      <p class="subtitle">Общая статистика</p>
+      
     </div>
     <div class="stat-grid reveal-group">
       <div class="stat-card reveal-item">
@@ -193,7 +205,7 @@
         <div class="lbl">Средний ADR</div>
       </div>
     </div>
-    <p class="stat-note">Данные — FACEIT, Сезон 8. Win rate и K/D.</p>
+    <p class="stat-note">Данные — FACEIT, Сезон 8. Win rate и K/D — среднее по Hell7Staf и От4Им.</p>
   </div>
 </section>
 
@@ -202,13 +214,13 @@
     <div class="head reveal">
       <span class="eyebrow">04 / Результаты</span>
       <h2>Результаты</h2>
-      <p class="subtitle">Сезон в цифрах</p>
+      
     </div>
     <div class="results-grid reveal-group">
       <div class="result-card reveal-item">
         <div class="mini-label">CS2 Premier</div>
         <h3>51%</h3>
-        <p>Средний win rate в сезоне при стабильной игре на нескольких картах.</p>
+        <p>Средний win rate в CS2 Premier, сезон 4.</p>
       </div>
       <div class="result-card reveal-item">
         <div class="mini-label">Региональные турниры</div>
@@ -229,7 +241,7 @@
     <div class="head reveal">
       <span class="eyebrow">05 / Планы команды</span>
       <h2>Цели</h2>
-      <p class="subtitle">Основные цели команды</p>
+      
     </div>
     <div class="timeline reveal-group">
       <div class="tl-item reveal-item">
@@ -263,7 +275,7 @@
     <div class="head reveal">
       <span class="eyebrow">06 / Основной состав · Сейчас в сети</span>
       <h2>Состав</h2>
-      <p class="subtitle">Наш основной состав</p>
+      
     </div>
 
     <div class="car-tabs" id="carTabs" role="group" aria-label="Быстрый выбор игрока"></div>
@@ -287,7 +299,7 @@
     <div class="head reveal">
       <span class="eyebrow">07 / Галерея</span>
       <h2>Галерея</h2>
-      <p class="subtitle">Лучшие моменты, клипы и скрины команды</p>
+      <!-- gallery-subtitle-removed  клипы и скрины  -->
     </div>
 
     <!--
@@ -328,6 +340,21 @@
         </button>
       </div>
 
+      <div class="reveal-item">
+        <button class="gal-item" type="button" data-type="video" data-src="video_3.mp4" data-poster="clip3-poster.jpg" data-title="Hell7Staf: Ace" data-meta="Anubis · 2026" aria-label="Открыть клип: Hell7Staf, Ace">
+          <img class="gal-thumb" src="clip3-poster.jpg" alt="" loading="lazy">
+          <video class="gal-preview" src="video_3.mp4" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
+          <span class="gal-badge">CLIP</span>
+          <span class="gal-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+          <span class="gal-cap">
+            <b class="gal-moment">Ace</b>
+            <span class="gal-name">Hell7Staf</span>
+            <span class="gal-meta">Anubis · 2026</span>
+          </span>
+          <i class="gal-bar"></i>
+        </button>
+      </div>
+
     </div>
   </div>
 </section>
@@ -337,7 +364,7 @@
     <div class="head reveal">
       <span class="eyebrow">08 / Поддержка</span>
       <h2>Поддержка</h2>
-      <p class="subtitle">Поддержите D1LDONS TEAM — мы развиваем команду, растим сообщество и строим бренд вокруг дисциплины и качества игры.</p>
+      
     </div>
     <div class="support-grid reveal-group">
       <div class="support-card reveal-item">
@@ -367,6 +394,11 @@
     © 2026 D1LDONS TEAM. Все права защищены. · Дизайн и разработка: <strong>Hell7staf &amp; От4Им</strong>
   </div>
 </footer>
+
+<!-- BACK TO TOP -->
+<button class="back-to-top" id="backToTop" type="button" aria-label="Наверх">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l-8 8h5v8h6v-8h5z"/></svg>
+</button>
 
 <script>
 (function () {
@@ -398,7 +430,9 @@
   update();
 })();
 </script>
-<script src="fog.js"></script>
-<script src="app.js"></script>
+<script src="pause.js?v=1.2"></script>
+<script src="plasma.js?v=2.6"></script>
+<script src="app.js?v=2.6"></script>
+<script src="effects.js?v=2.6"></script>
 </body>
 </html>

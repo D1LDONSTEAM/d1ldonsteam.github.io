@@ -1,0 +1,59 @@
+/* ==========================================================
+   D1LDONS TEAM — pause.css
+   Стили «Режима паузы» (активны только при html.pause-mode,
+   который ставит pause.js при PAUSE_MODE = true).
+   ========================================================== */
+
+/* ---------- Плашка ---------- */
+.pause-mode .hero-badge.is-paused{
+  border-color:rgba(255,255,255,.35);
+}
+.pause-mode .hero-badge.is-paused .badge-dot{
+  background:#737373; box-shadow:none; animation:none; opacity:.8;
+}
+.pause-mode .hero-badge.is-paused .shiny-text{
+  animation-duration:9s;               /* блик медленнее — «ленивый» */
+}
+.pause-note{
+  margin:0 0 18px;
+  font-family:var(--mono,'JetBrains Mono',monospace);
+  font-size:11px; line-height:1.6; letter-spacing:.08em;
+  color:#737373; max-width:46ch;
+}
+
+/* ---------- Паутина ---------- */
+.pause-web{
+  position:absolute; top:0; right:0;
+  color:#fff; opacity:.16;
+  pointer-events:none;
+  transform:scaleX(-1);                /* нити расходятся от правого верхнего угла */
+}
+.pause-web svg{ display:block; width:100%; height:100%; overflow:visible; }
+.pause-web path{
+  fill:none; stroke:currentColor; stroke-width:1;
+  vector-effect:non-scaling-stroke; stroke-linecap:round;
+}
+
+.pause-mode .hero{ position:relative; }
+.pause-web-hero{
+  width:clamp(130px, 20vw, 260px); height:clamp(130px, 20vw, 260px);
+  z-index:1;
+}
+
+.pause-mode .pcard{ isolation:isolate; }
+.pause-web-card{
+  width:88px; height:88px;
+  opacity:.2;
+  z-index:-1;                          /* под контентом карточки, над её фоном */
+}
+
+/* ---------- Мобильные: паутина ещё меньше, без горизонтального скролла ---------- */
+@media (max-width:540px){
+  .pause-web-hero{ width:110px; height:110px; }
+  .pause-web-card{ width:68px; height:68px; }
+  .pause-note{ font-size:10.5px; }
+}
+
+@media print{
+  .pause-web{ display:none !important; }
+}

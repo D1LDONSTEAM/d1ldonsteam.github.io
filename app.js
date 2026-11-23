@@ -20,7 +20,7 @@
       steam: 'https://steamcommunity.com/profiles/76561199788032731',
       premier: { rating: '11 750', wr: '55.4%', kd: '1.09', hs: '35.5%' },
       faceit: null,
-      // TODO: заполнить реальными данными игрока
+      // TODO: запросить у пользователя реальные настройки CFG
       cfg: { sens: null, dpi: null, res: null, maps: null, crosshair: null },
       weapons: ['AWP']
     },
@@ -32,9 +32,9 @@
       steam: 'https://steamcommunity.com/profiles/76561199508602143',
       premier: { rating: '6 444', wr: '50.7%', kd: '0.97', hs: '42%' },
       faceit: { rating: '913', wr: '63%', kd: '1.05', hs: '41%' },
-      // TODO: заполнить реальными данными игрока
+      // TODO: запросить у пользователя реальные настройки CFG
       cfg: { sens: null, dpi: null, res: null, maps: null, crosshair: null },
-      weapons: null // TODO
+      weapons: ['AK-47', 'M4A1-S']
     },
     {
       id: '76561199205058140',
@@ -44,9 +44,14 @@
       steam: 'https://steamcommunity.com/id/DST_Ot4Im',
       premier: { rating: '12 451', wr: '48%', kd: '0.93', hs: '46.2%' },
       faceit: { rating: '1 182', wr: '68%', kd: '1.03', hs: '46%' },
-      // TODO: заполнить реальными данными игрока
-      cfg: { sens: null, dpi: null, res: null, maps: null, crosshair: null },
-      weapons: null // TODO
+      cfg: {
+        sens: '2.52 (Zoom 1.0)',
+        dpi: null, // не сохраняется в cfg (настройка мыши)
+        res: 'Высота 1050p',
+        maps: null,
+        crosshair: 'cl_crosshairstyle 4; cl_crosshairsize 2; cl_crosshairgap 4; cl_crosshairthickness 0.5; cl_crosshair_drawoutline 1; cl_crosshaircolor_r 255; cl_crosshaircolor_g 0; cl_crosshaircolor_b 0'
+      },
+      weapons: ['AK-47', 'M4A4', 'AWP']
     },
     {
       id: '76561199169413562',
@@ -56,9 +61,9 @@
       steam: 'https://steamcommunity.com/profiles/76561199169413562',
       premier: { rating: '9 605', wr: '50.5%', kd: '0.92', hs: '39.2%' },
       faceit: null,
-      // TODO: заполнить реальными данными игрока
+      // TODO: запросить у пользователя реальные настройки CFG
       cfg: { sens: null, dpi: null, res: null, maps: null, crosshair: null },
-      weapons: null // TODO
+      weapons: ['NEGEV', '(AK-47)', '(AWP)', '(M4A1-S)']
     },
     {
       id: '76561198035258646',
@@ -68,9 +73,9 @@
       steam: 'https://steamcommunity.com/profiles/76561198035258646/',
       premier: null,
       faceit: null,
-      // TODO: заполнить реальными данными игрока
+      // TODO: запросить у пользователя реальные настройки CFG
       cfg: { sens: null, dpi: null, res: null, maps: null, crosshair: null },
-      weapons: null // TODO
+      weapons: ['AWP', 'AK-47', 'M4A1-S']
     }
   ];
 
